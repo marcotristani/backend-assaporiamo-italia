@@ -1,0 +1,116 @@
+package project.italy.backend.models;
+
+import java.util.List;
+
+import org.hibernate.validator.constraints.URL;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+@Entity
+@Table(name = "vini")
+public class Vino extends EntityBaseNomeSlug {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Size(min = 3, max = 4)
+    private String certificazione;
+
+    @NotBlank(message = "Inserire una descrizione")
+    @Lob
+    private String descrizione;
+
+    @URL(message = "inserire un URL valido")
+    @NotBlank(message = "Inserire un url per l'immagine")
+    private String urlImmagine;
+
+    @URL(message = "inserire un URL valido")
+    @NotBlank(message = "Inserire una link per lo store")
+    private String linkStore;
+
+    @ManyToOne
+    @JoinColumn(name = "regione_id", nullable = false)
+    private Regione regione;
+
+    @ManyToOne
+    @JoinColumn(name = "tipologia_id", nullable = false)
+    private Tipologia tipologia;
+
+    @ManyToMany(mappedBy = "vini")
+    private List<ProdottoTipico> prodottiTipici;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCertificazione() {
+        return certificazione;
+    }
+
+    public void setCertificazione(String certificazione) {
+        this.certificazione = certificazione;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+    }
+
+    public String getUrlImmagine() {
+        return urlImmagine;
+    }
+
+    public void setUrlImmagine(String urlImmagine) {
+        this.urlImmagine = urlImmagine;
+    }
+
+    public String getLinkStore() {
+        return linkStore;
+    }
+
+    public void setLinkStore(String linkStore) {
+        this.linkStore = linkStore;
+    }
+
+    public Regione getRegione() {
+        return regione;
+    }
+
+    public void setRegione(Regione regione) {
+        this.regione = regione;
+    }
+
+    public Tipologia getTipologia() {
+        return tipologia;
+    }
+
+    public void setTipologia(Tipologia tipologia) {
+        this.tipologia = tipologia;
+    }
+
+    public List<ProdottoTipico> getProdottiTipici() {
+        return prodottiTipici;
+    }
+
+    public void setProdottiTipici(List<ProdottoTipico> prodottiTipici) {
+        this.prodottiTipici = prodottiTipici;
+    }
+}
