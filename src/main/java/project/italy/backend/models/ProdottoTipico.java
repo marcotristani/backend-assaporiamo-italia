@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "prodotto")
+@Table(name = "prodotti")
 public class ProdottoTipico extends EntityBaseNomeSlug {
 
     @Id
@@ -47,7 +47,7 @@ public class ProdottoTipico extends EntityBaseNomeSlug {
     private Categoria categoria;
 
     @ManyToMany
-    @JoinTable(joinColumns = @JoinColumn(name = "prodotto_id"), inverseJoinColumns = @JoinColumn(name = "vino_id"))
+    @JoinTable(name = "prodotto_vino", joinColumns = @JoinColumn(name = "prodotto_id"), inverseJoinColumns = @JoinColumn(name = "vino_id"))
     private List<Vino> vini;
 
     public Integer getId() {
