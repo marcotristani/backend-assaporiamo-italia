@@ -1,6 +1,7 @@
 package project.italy.backend.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,14 @@ public class ProdottoTipicoService {
 
     @Autowired
     CategoriaService categoriaService;
+
+    public Optional<ProdottoTipico> findBySlug(String slugProdotto) {
+        return prodottoTipicoRepository.findBySlug(slugProdotto);
+    }
+
+    public ProdottoTipico getBySlug(String slugProdotto) {
+        return prodottoTipicoRepository.findBySlug(slugProdotto).get();
+    }
 
     public List<ProdottoTipico> findAllProdottiOrdinati(String order) {
         if (order.equalsIgnoreCase("alfabetico")) {
@@ -65,5 +74,15 @@ public class ProdottoTipicoService {
 
         return prodottoTipicoRepository.findByRegioneAndCategoria(regione,
                 categoria);
+    }
+
+    public List<ProdottoTipico> getProdottiPerVino(String slugVino,
+            String order) {
+
+        if (order.equalsIgnoreCase("alfabetico")) {
+            return prodottoTipicoRepository.findByViniSlugOrderByNomeAsc(slugVino);
+        }
+
+        return prodottoTipicoRepository.findByViniSlug(slugVino);
     }
 }

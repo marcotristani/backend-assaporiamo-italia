@@ -1,6 +1,7 @@
 package project.italy.backend.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,14 @@ public class VinoService {
 
     @Autowired
     TipologiaService tipologiaService;
+
+    public Optional<Vino> findBySlug(String slugVino) {
+        return vinoRepository.findBySlug(slugVino);
+    }
+
+    public Vino getBySlug(String slugVino) {
+        return vinoRepository.findBySlug(slugVino).get();
+    }
 
     public List<Vino> findAllViniOrdinati(String order) {
         if (order.equalsIgnoreCase("alfabetico")) {
@@ -63,5 +72,15 @@ public class VinoService {
         }
 
         return vinoRepository.findByRegioneAndTipologia(regione, tipologia);
+    }
+
+    public List<Vino> getViniPerProdotto(String slugProdotto,
+            String order) {
+
+        if (order.equalsIgnoreCase("alfabetico")) {
+            return vinoRepository.findByProdottiTipiciSlugOrderByNomeAsc(slugProdotto);
+        }
+
+        return vinoRepository.findByProdottiTipiciSlug(slugProdotto);
     }
 }

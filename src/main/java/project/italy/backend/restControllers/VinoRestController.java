@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
+import project.italy.backend.models.ProdottoTipico;
 import project.italy.backend.models.Regione;
 import project.italy.backend.models.Tipologia;
 import project.italy.backend.models.Vino;
+import project.italy.backend.service.ProdottoTipicoService;
 import project.italy.backend.service.RegioneService;
 import project.italy.backend.service.TipologiaService;
 import project.italy.backend.service.VinoService;
@@ -34,6 +36,9 @@ public class VinoRestController {
 
     @Autowired
     TipologiaService tipologiaService;
+
+    @Autowired
+    ProdottoTipicoService prodottoTipicoService;
 
     @GetMapping("/all")
     public ResponseEntity<List<Vino>> index(@RequestParam(defaultValue = "default") String order) {
@@ -84,6 +89,32 @@ public class VinoRestController {
         List<Vino> vini = vinoService.getViniPerRegioneETipologia(slugRegione, slugTipologia, order);
 
         return new ResponseEntity<List<Vino>>(vini, HttpStatus.OK);
+    }
+
+    @GetMapping("/prodotto/{slugProdotto}")
+    public ResponseEntity<List<Vino>> indexProdotto(@PathVariable("slugProdotto") String slugProdotto,
+            @RequestParam(defaultValue = "default") String order) {
+
+        Optional<ProdottoTipico> optionalProdotto = prodottoTipicoService.findBySlug(slugProdotto);
+        if (optionalProdotto.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Vino> vini = vinoService.getViniPerProdotto(slugProdotto, order);
+
+        return new ResponseEntity<List<Vino>>(vini, HttpStatus.OK);
+    }
+
+    @GetMapping("/{slugVino}")
+    public ResponseEntity<Vino> show(@PathVariable("slugVino") String slugVino) {
+
+        Optional<Vino> optionalVino = vinoService.findBySlug(slugVino);
+        if (optionalVino.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Vino vino = vinoService.getBySlug(slugVino);
+        return new ResponseEntity<Vino>(vino, HttpStatus.OK);
     }
 
 }

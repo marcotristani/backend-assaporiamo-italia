@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import project.italy.backend.models.Categoria;
 import project.italy.backend.models.ProdottoTipico;
 import project.italy.backend.models.Regione;
+import project.italy.backend.models.Vino;
 import project.italy.backend.service.CategoriaService;
 import project.italy.backend.service.ProdottoTipicoService;
 import project.italy.backend.service.RegioneService;
+import project.italy.backend.service.VinoService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +37,9 @@ public class ProdottoTipicoRestController {
 
     @Autowired
     CategoriaService categoriaService;
+
+    @Autowired
+    VinoService vinoService;
 
     @GetMapping("/all")
     public ResponseEntity<List<ProdottoTipico>> index(@RequestParam(defaultValue = "default") String order) {
@@ -83,4 +88,29 @@ public class ProdottoTipicoRestController {
         return new ResponseEntity<List<ProdottoTipico>>(prodottiTipici, HttpStatus.OK);
     }
 
+    @GetMapping("/vino/{slugVino}")
+    public ResponseEntity<List<ProdottoTipico>> indexProdotto(@PathVariable("slugVino") String slugVino,
+            @RequestParam(defaultValue = "default") String order) {
+
+        Optional<Vino> optionalVino = vinoService.findBySlug(slugVino);
+        if (optionalVino.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerVino(slugVino, order);
+
+        return new ResponseEntity<List<ProdottoTipico>>(prodottiTipici, HttpStatus.OK);
+    }
+
+    @GetMapping("/{slugProdotto}")
+    public ResponseEntity<ProdottoTipico> show(@PathVariable("slugProdotto") String slugProdotto) {
+
+        Optional<ProdottoTipico> optionalProdotto = prodottoTipicoService.findBySlug(slugProdotto);
+        if (optionalProdotto.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        ProdottoTipico prodottoTipico = prodottoTipicoService.getBySlug(slugProdotto);
+        return new ResponseEntity<ProdottoTipico>(prodottoTipico, HttpStatus.OK);
+    }
 }
