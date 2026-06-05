@@ -3,16 +3,12 @@ package project.italy.backend.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import project.italy.backend.models.Categoria;
 import project.italy.backend.models.ProdottoTipico;
 import project.italy.backend.models.Regione;
-import project.italy.backend.repository.CategoriaRepository;
 import project.italy.backend.repository.ProdottoTipicoRepository;
-import project.italy.backend.repository.RegioneRepository;
 
 @Service
 public class ProdottoTipicoService {
@@ -21,10 +17,10 @@ public class ProdottoTipicoService {
     ProdottoTipicoRepository prodottoTipicoRepository;
 
     @Autowired
-    RegioneRepository regioneRepository;
+    RegioneService regioneService;
 
     @Autowired
-    CategoriaRepository categoriaRepository;
+    CategoriaService categoriaService;
 
     public List<ProdottoTipico> findAllProdottiOrdinati(String order) {
         if (order.equalsIgnoreCase("alfabetico")) {
@@ -35,8 +31,7 @@ public class ProdottoTipicoService {
 
     public List<ProdottoTipico> getProdottiPerRegione(String slugRegione, String order) {
 
-        Regione regione = regioneRepository.findBySlug(slugRegione)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Regione non trovata"));
+        Regione regione = regioneService.getRegioneBySlug(slugRegione);
 
         if (order.equalsIgnoreCase("alfabetico")) {
             return prodottoTipicoRepository.findByRegioneOrderByNomeAsc(regione);
@@ -47,8 +42,7 @@ public class ProdottoTipicoService {
 
     public List<ProdottoTipico> getProdottiPerCategoria(String slugCategoria, String order) {
 
-        Categoria categoria = categoriaRepository.findBySlug(slugCategoria)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria non trovata"));
+        Categoria categoria = categoriaService.getCategoriaBySlug(slugCategoria);
 
         if (order.equalsIgnoreCase("alfabetico")) {
             return prodottoTipicoRepository.findByCategoriaOrderByNomeAsc(categoria);
@@ -60,16 +54,16 @@ public class ProdottoTipicoService {
     public List<ProdottoTipico> getProdottiPerRegioneECategoria(String slugRegione, String slugCategoria,
             String order) {
 
-        Regione regione = regioneRepository.findBySlug(slugRegione)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Regione non trovata"));
+        Regione regione = regioneService.getRegioneBySlug(slugRegione);
 
-        Categoria categoria = categoriaRepository.findBySlug(slugCategoria)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria non trovata"));
+        Categoria categoria = categoriaService.getCategoriaBySlug(slugCategoria);
 
         if (order.equalsIgnoreCase("alfabetico")) {
-            return prodottoTipicoRepository.findByRegioneAndCategoriaOrderByNomeAsc(regione, categoria);
+            return prodottoTipicoRepository.findByRegioneAndCategoriaOrderByNomeAsc(regione,
+                    categoria);
         }
 
-        return prodottoTipicoRepository.findByRegioneAndCategoria(regione, categoria);
+        return prodottoTipicoRepository.findByRegioneAndCategoria(regione,
+                categoria);
     }
 }

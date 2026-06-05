@@ -3,15 +3,11 @@ package project.italy.backend.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import project.italy.backend.models.Regione;
 import project.italy.backend.models.Tipologia;
 import project.italy.backend.models.Vino;
-import project.italy.backend.repository.RegioneRepository;
-import project.italy.backend.repository.TipologiaRepository;
 import project.italy.backend.repository.VinoRepository;
 
 @Service
@@ -21,10 +17,10 @@ public class VinoService {
     VinoRepository vinoRepository;
 
     @Autowired
-    RegioneRepository regioneRepository;
+    RegioneService regioneService;
 
     @Autowired
-    TipologiaRepository tipologiaRepository;
+    TipologiaService tipologiaService;
 
     public List<Vino> findAllViniOrdinati(String order) {
         if (order.equalsIgnoreCase("alfabetico")) {
@@ -35,8 +31,7 @@ public class VinoService {
 
     public List<Vino> getViniPerRegione(String slugRegione, String order) {
 
-        Regione regione = regioneRepository.findBySlug(slugRegione)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Regione non trovata"));
+        Regione regione = regioneService.getRegioneBySlug(slugRegione);
 
         if (order.equalsIgnoreCase("alfabetico")) {
             return vinoRepository.findByRegioneOrderByNomeAsc(regione);
@@ -47,8 +42,7 @@ public class VinoService {
 
     public List<Vino> getViniPerTipologia(String slugTipologia, String order) {
 
-        Tipologia tipologia = tipologiaRepository.findBySlug(slugTipologia)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria non trovata"));
+        Tipologia tipologia = tipologiaService.getTipologiaBySlug(slugTipologia);
 
         if (order.equalsIgnoreCase("alfabetico")) {
             return vinoRepository.findByTipologiaOrderByNomeAsc(tipologia);
@@ -60,11 +54,9 @@ public class VinoService {
     public List<Vino> getViniPerRegioneETipologia(String slugRegione, String slugTipologia,
             String order) {
 
-        Regione regione = regioneRepository.findBySlug(slugRegione)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Regione non trovata"));
+        Regione regione = regioneService.getRegioneBySlug(slugRegione);
 
-        Tipologia tipologia = tipologiaRepository.findBySlug(slugTipologia)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria non trovata"));
+        Tipologia tipologia = tipologiaService.getTipologiaBySlug(slugTipologia);
 
         if (order.equalsIgnoreCase("alfabetico")) {
             return vinoRepository.findByRegioneAndTipologiaOrderByNomeAsc(regione, tipologia);

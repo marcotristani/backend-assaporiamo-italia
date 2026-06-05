@@ -1,12 +1,19 @@
 package project.italy.backend.restControllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
+import project.italy.backend.models.Regione;
+import project.italy.backend.models.Tipologia;
 import project.italy.backend.models.Vino;
+import project.italy.backend.service.RegioneService;
+import project.italy.backend.service.TipologiaService;
 import project.italy.backend.service.VinoService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,29 +29,61 @@ public class VinoRestController {
     @Autowired
     VinoService vinoService;
 
+    @Autowired
+    RegioneService regioneService;
+
+    @Autowired
+    TipologiaService tipologiaService;
+
     @GetMapping("/all")
-    public List<Vino> index(@RequestParam(defaultValue = "default") String order) {
-        return vinoService.findAllViniOrdinati(order);
+    public ResponseEntity<List<Vino>> index(@RequestParam(defaultValue = "default") String order) {
+        List<Vino> vini = vinoService.findAllViniOrdinati(order);
+
+        return new ResponseEntity<List<Vino>>(vini, HttpStatus.OK);
     }
 
     @GetMapping("/regione/{slugRegione}")
-    public List<Vino> indexRegione(@PathVariable("slugRegione") String slugRegione,
+    public ResponseEntity<List<Vino>> indexRegione(@PathVariable("slugRegione") String slugRegione,
             @RequestParam(defaultValue = "default") String order) {
-        return vinoService.getViniPerRegione(slugRegione, order);
+
+        Optional<Regione> optionalRegione = regioneService.findRegioneBySlug(slugRegione);
+        if (optionalRegione.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<Vino> vini = vinoService.getViniPerRegione(slugRegione, order);
+
+        return new ResponseEntity<List<Vino>>(vini, HttpStatus.OK);
     }
 
     @GetMapping("/categoria/{slugTipologia}")
-    public List<Vino> indexTipologia(@PathVariable("slugTipologia") String slugTipologia,
+    public ResponseEntity<List<Vino>> indexTipologia(@PathVariable("slugTipologia") String slugTipologia,
             @RequestParam(defaultValue = "default") String order) {
-        return vinoService.getViniPerTipologia(slugTipologia, order);
+
+        Optional<Tipologia> optionalTipologia = tipologiaService.findTipologiaBySlug(slugTipologia);
+        if (optionalTipologia.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Vino> vini = vinoService.getViniPerTipologia(slugTipologia, order);
+
+        return new ResponseEntity<List<Vino>>(vini, HttpStatus.OK);
     }
 
     @GetMapping("/regione/{slugRegione}/categoria/{slugTipologia}")
-    public List<Vino> indexRegioneETipolgia(
+    public ResponseEntity<List<Vino>> indexRegioneETipolgia(
             @PathVariable("slugRegione") String slugRegione,
             @PathVariable("slugTipologia") String slugTipologia,
             @RequestParam(defaultValue = "default") String order) {
-        return vinoService.getViniPerRegioneETipologia(slugRegione, slugTipologia, order);
+
+        Optional<Regione> optionalRegione = regioneService.findRegioneBySlug(slugRegione);
+        Optional<Tipologia> optionalTipologia = tipologiaService.findTipologiaBySlug(slugTipologia);
+        if (optionalTipologia.isEmpty() || optionalRegione.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Vino> vini = vinoService.getViniPerRegioneETipologia(slugRegione, slugTipologia, order);
+
+        return new ResponseEntity<List<Vino>>(vini, HttpStatus.OK);
     }
 
 }

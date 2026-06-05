@@ -1,6 +1,7 @@
 package project.italy.backend.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,4 +19,14 @@ public class TipologiaService {
         return tipologiaRepository.findAllByOrderByNomeAsc();
     }
 
+    public Optional<Tipologia> findTipologiaBySlug(String slugRegione) {
+        Optional<Tipologia> optionalTipologia = tipologiaRepository.findBySlug(slugRegione);
+
+        return optionalTipologia;
+    }
+
+    public Tipologia getTipologiaBySlug(String slugRegione) {
+        Optional<Tipologia> optionalTipologia = tipologiaRepository.findBySlug(slugRegione);
+        return optionalTipologia.get();
+    }
 }

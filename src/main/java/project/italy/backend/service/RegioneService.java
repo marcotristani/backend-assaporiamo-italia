@@ -1,11 +1,10 @@
 package project.italy.backend.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import project.italy.backend.models.Regione;
 import project.italy.backend.repository.RegioneRepository;
@@ -20,10 +19,14 @@ public class RegioneService {
         return regioneRepository.findAllByOrderByNomeAsc();
     }
 
-    public Regione getRegioneBySlug(String slugRegione) {
-        Regione regione = regioneRepository.findBySlug(slugRegione)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria non trovata"));
+    public Optional<Regione> findRegioneBySlug(String slugRegione) {
+        Optional<Regione> optionalRegione = regioneRepository.findBySlug(slugRegione);
 
-        return regione;
+        return optionalRegione;
+    }
+
+    public Regione getRegioneBySlug(String slugRegione) {
+        Optional<Regione> optionalRegione = regioneRepository.findBySlug(slugRegione);
+        return optionalRegione.get();
     }
 }
