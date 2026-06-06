@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="it" xmlns:th="http://thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <th:block th:replace="~{fragments/head :: head('Prodotti Tipici')}" />
+  </head>
+  <body class="bg-light">
+    <th:block
+      th:replace="~{fragments/navbarProdotti :: navbarProdotti(${Listacategorie}, ${categoriaSelezionata})}"
+    />
+
+    <div class="container py-5">
+      <div class="container py-5">
+        <header class="text-center mb-5">
+          <h1 class="display-5 fw-bold text-primary mb-3">Prodotti Tipici</h1>
+          <p class="lead text-muted mx-auto" style="max-width: 800px">
+            Questa è la lista di tutti i prodotti tipici
+          </p>
+        </header>
+
+        <th:block
+          th:replace="~{fragments/bottoneOrdinamento :: bottoneOrdinamento( ${categoriaSelezionata}, null)}"
+        />
+
+        <div class="table-responsive bg-white shadow-sm rounded">
+          <table class="table table-hover table-striped mb-0">
+            <thead class="table-primary">
+              <tr>
+                <th scope="col" class="py-3">Nome Prodotto Tipico</th>
+                <th scope="col" class="py-3">Regione</th>
+                <th scope="col" class="py-3">Categoria</th>
+                <th scope="col" class="py-3 text-center">Azioni</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                th:each="prodotto : ${prodottiTipici}"
+                th:object="${prodotto}"
+              >
+                <td class="align-middle fw-semibold">[[*{nome}]]</td>
+                <td class="align-middle">[[*{regione.nome}]]</td>
+                <td class="align-middle">[[*{categoria.nome}]]</td>
+                <td class="align-middle text-center">
+                  <div class="btn-group btn-group-sm" role="group">
+                    <a
+                      th:href="@{/prodotti/dettaglio/{slugProdotto}(slugProdotto=*{slug})}"
+                      class="btn btn-outline-info"
+                      title="Vedi Dettaglio"
+                    >
+                      Visualizza
+                    </a>
+
+                    <a
+                      th:href="@{/prodotti/modifica/{slugProdotto}(slugProdotto=*{slug})}"
+                      class="btn btn-outline-warning"
+                      title="Modifica Prodotto"
+                    >
+                      Modifica
+                    </a>
+
+                    <a
+                      th:href="@{/prodotti/elimina/{slugProdotto}(slugProdotto=*{slug})}"
+                      class="btn btn-outline-danger"
+                      title="Elimina Prodotto"
+                      onclick="
+                        return confirm(
+                          'Sei sicuro di voler eliminare questo prodotto?',
+                        );
+                      "
+                    >
+                      Elimina
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              <!-- Messaggio se la lista è vuota -->
+              <tr th:if="${#lists.isEmpty(prodottiTipici)}">
+                <td colspan="4" class="text-center text-muted py-4">
+                  Nessun prodotto tipico trovato.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

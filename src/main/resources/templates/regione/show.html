@@ -7,30 +7,26 @@
   </head>
   <body class="bg-light" th:object="${regione}">
     <div class="container py-5">
-      <!-- Contenitore Pulsanti Superiori (Sinistra e Destra) -->
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <!-- Pulsante Torna al BackOffice a Sinistra -->
         <a
-          th:href="@{/backoffice}"
+          th:href="@{/backoffice/regioni}"
           class="btn btn-outline-secondary btn-sm px-4 fw-semibold shadow-sm"
         >
           Tutte le regioni
         </a>
 
-        <!-- Pulsante Modifica Regione a Destra -->
         <a
-          th:href="@{/backoffice/regione/{id}/modifica(id=*{id})}"
+          th:href="@{/backoffice/regione/{slugRegione}/modifica(slugRegione=*{slug})}"
           class="btn btn-warning btn-sm px-4 fw-bold shadow-sm"
         >
           Modifica Regione
         </a>
       </div>
 
-      <!-- Intestazione con Nome della Regione Dinamico -->
       <header class="text-center mb-5">
         <h1 class="display-5 fw-bold text-primary mb-3">
           Dettaglio Regione:
-          <span class="text-secondary" th:text="*{nome}">Toscana</span>
+          <span class="text-secondary">[[*{nome}]]</span>
         </h1>
         <p class="lead text-muted mx-auto" style="max-width: 800px">
           Visualizza le informazioni della regione e accedi alla gestione dei
@@ -38,9 +34,7 @@
         </p>
       </header>
 
-      <!-- Contenitore Principale (Card in stile Home) -->
       <main class="card shadow-sm p-4 bg-white rounded-3 mb-4">
-        <!-- Contenitore Immagine della Regione -->
         <div class="mb-4 text-center">
           <img
             th:src="*{urlImmagine}"
@@ -50,7 +44,6 @@
           />
         </div>
 
-        <!-- Sezione Info e Descrizione -->
         <div class="border-bottom pb-3 mb-4">
           <h2 class="h4 fw-bold text-dark mb-2">Descrizione del Territorio</h2>
           <p class="text-muted lh-base mb-0" th:text="*{descrizione}">
@@ -59,24 +52,21 @@
           </p>
         </div>
 
-        <!-- Sezione Azioni (Pulsanti Filtro Prodotti e Vini della Regione) -->
         <div>
           <h3 class="h5 fw-bold text-dark mb-3">Elementi Collegati</h3>
           <div class="row g-3">
-            <!-- Pulsante Vedi Prodotti della Regione -->
             <div class="col-12 col-md-6">
               <a
-                th:href="@{/backoffice/regione/{id}/prodotti(id=*{id})}"
+                th:href="@{/backoffice/regione/{slugRegione}/prodotti(slugRegione=*{slug})}"
                 class="btn btn-primary btn-lg w-100 py-3 shadow-sm d-flex align-items-center justify-content-center fw-bold"
               >
                 Visualizza Prodotti di Questa Regione
               </a>
             </div>
 
-            <!-- Pulsante Vedi Vini della Regione -->
             <div class="col-12 col-md-6">
               <a
-                th:href="@{/backoffice/regione/{id}/vini(id=*{id})}"
+                th:href="@{/backoffice/regione/{slugRegione}/vini(slugRegione=*{slug})}"
                 class="btn btn-success btn-lg w-100 py-3 shadow-sm d-flex align-items-center justify-content-center fw-bold"
               >
                 Visualizza Vini di Questa Regione

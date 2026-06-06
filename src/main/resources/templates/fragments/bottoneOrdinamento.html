@@ -1,0 +1,22 @@
+<th:block
+  th:fragment="bottoneOrdinamento(categoriaSelezionata, regioneSelezionata)"
+>
+  <div class="d-flex justify-content-end mb-3">
+    <a
+      th:if="${regioneSelezionata == null && categoriaSelezionata == null} "
+      th:href="@{/backoffice/prodotti/all(order=${param.order != null && param.order[0] == 'alfabetico' ? null : 'alfabetico'})}"
+      class="btn btn-outline-primary d-flex align-items-center gap-2 shadow-sm"
+      th:classappend="${param.order != null && param.order[0] == 'alfabetico'} ? 'active' : ''"
+    >
+      <span>Ordina A-Z</span>
+    </a>
+    <a
+      th:if="${regioneSelezionata == null && categoriaSelezionata != null} "
+      th:href=" @{/backoffice/prodotti/categoria/{slug}(slug=${categoriaSelezionata.slug}, order=${param.order != null && param.order[0] == 'alfabetico' ? null : 'alfabetico'})}"
+      class="btn btn-outline-primary d-flex align-items-center gap-2 shadow-sm"
+      th:classappend="${param.order != null && param.order[0] == 'alfabetico'} ? 'active' : ''"
+    >
+      <span>Ordina A-Z</span>
+    </a>
+  </div>
+</th:block>
