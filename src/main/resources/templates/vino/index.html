@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <th:block th:replace="~{fragments/headScript :: head('Prodotti Tipici')}" />
+    <th:block th:replace="~{fragments/headScript :: head('Vini')}" />
   </head>
   <body class="bg-light">
     <th:block
-      th:replace="~{fragments/navbar :: navbarProdotti(${listaCategorie}, ${categoriaSelezionata}, ${regioneSelezionata})}"
+      th:replace="~{fragments/navbar :: navbarVini(${listaTipologie},${tipologiaSelezionata}, ${regioneSelezionata} )}"
     />
 
     <div class="container py-5">
@@ -20,60 +20,60 @@
         </a>
         <th:block th:unless="${regioneSelezionata == null}">
           <a
-            th:href="@{/backoffice/prodotti/all}"
+            th:href="@{/backoffice/vini/all}"
             class="btn btn-warning btn-sm px-4 fw-bold shadow-sm"
           >
-            Tutti i prodotti
+            Tutti i Vini
           </a>
         </th:block>
       </div>
 
       <header class="text-center mb-5">
         <th:block th:if="${regioneSelezionata == null}">
-          <h1 class="display-5 fw-bold text-primary mb-3">Prodotti Tipici</h1>
+          <h1 class="display-5 fw-bold text-primary mb-3">Vini</h1>
         </th:block>
 
         <th:block th:unless="${regioneSelezionata == null}">
           <h1 class="display-5 fw-bold text-primary mb-3">
-            Prodotti Tipici [[${regioneSelezionata.nome}]]
+            Vini [[${regioneSelezionata.nome}]]
           </h1>
         </th:block>
-        <th:block th:if="${categoriaSelezionata == null}">
+        <th:block th:if="${tipologiaSelezionata == null}">
           <p class="lead text-muted mx-auto" style="max-width: 800px">
-            Questa è la lista di tutti i prodotti tipici
+            Questa è la lista di tutti i vini
           </p>
         </th:block>
-        <th:block th:if="${categoriaSelezionata != null}">
+        <th:block th:if="${tipologiaSelezionata != null}">
           <p class="lead text-muted mx-auto" style="max-width: 800px">
-            Questa è la lista dei prodotti tipici della categoria
-            [[${categoriaSelezionata.nome}]]
+            Questa è la lista dei vini della categoria
+            [[${tipologiaSelezionata.nome}]]
           </p>
         </th:block>
       </header>
 
       <th:block
-        th:replace="~{fragments/bottoneOrdinamento :: bottoneOrdinamentoProdotti( ${categoriaSelezionata}, ${regioneSelezionata})}"
+        th:replace="~{fragments/bottoneOrdinamento :: bottoneOrdinamentoVini(${tipologiaSelezionata}, ${regioneSelezionata})}"
       />
 
       <div class="table-responsive bg-white shadow-sm rounded">
         <table class="table table-hover table-striped mb-0">
           <thead class="table-primary">
             <tr>
-              <th scope="col" class="py-3">Nome Prodotto Tipico</th>
+              <th scope="col" class="py-3">Nome Vino</th>
               <th scope="col" class="py-3">Regione</th>
-              <th scope="col" class="py-3">Categoria</th>
+              <th scope="col" class="py-3">Tipologia</th>
               <th scope="col" class="py-3 text-center">Azioni</th>
             </tr>
           </thead>
           <tbody>
-            <tr th:each="prodotto : ${prodottiTipici}" th:object="${prodotto}">
+            <tr th:each="vino : ${vini}" th:object="${vino}">
               <td class="align-middle fw-semibold">[[*{nome}]]</td>
               <td class="align-middle">[[*{regione.nome}]]</td>
-              <td class="align-middle">[[*{categoria.nome}]]</td>
+              <td class="align-middle">[[*{tipologia.nome}]]</td>
               <td class="align-middle text-center">
                 <div class="btn-group btn-group-sm" role="group">
                   <a
-                    th:href="@{/prodotti/dettaglio/{slugProdotto}(slugProdotto=*{slug})}"
+                    th:href="@{/vini/dettaglio/{slugVino}(slugVino=*{slug})}"
                     class="btn btn-outline-info"
                     title="Vedi Dettaglio"
                   >
@@ -81,20 +81,20 @@
                   </a>
 
                   <a
-                    th:href="@{/prodotti/modifica/{slugProdotto}(slugProdotto=*{slug})}"
+                    th:href="@{/vini/modifica/{slugVino}(slugVino=*{slug})}"
                     class="btn btn-outline-warning"
-                    title="Modifica Prodotto"
+                    title="Modifica Vino"
                   >
                     Modifica
                   </a>
 
                   <a
-                    th:href="@{/prodotti/elimina/{slugProdotto}(slugProdotto=*{slug})}"
+                    th:href="@{/vini/elimina/{slugVino}(slugVino=*{slug})}"
                     class="btn btn-outline-danger"
-                    title="Elimina Prodotto"
+                    title="Elimina Vino"
                     onclick="
                       return confirm(
-                        'Sei sicuro di voler eliminare questo prodotto?',
+                        'Sei sicuro di voler eliminare questo vino?',
                       );
                     "
                   >
@@ -104,9 +104,9 @@
               </td>
             </tr>
             <!-- Messaggio se la lista è vuota -->
-            <tr th:if="${#lists.isEmpty(prodottiTipici)}">
+            <tr th:if="${#lists.isEmpty(vini)}">
               <td colspan="4" class="text-center text-muted py-4">
-                Nessun prodotto tipico trovato.
+                Nessun vino trovato.
               </td>
             </tr>
           </tbody>

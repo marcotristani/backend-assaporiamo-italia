@@ -70,7 +70,7 @@ public class ProdottoTipicoController {
     }
 
     @GetMapping("/categoria/{slugCategoria}/regione/{slugRegione}")
-    public String getMethodName(@PathVariable("slugCategoria") String slugCategoria,
+    public String indexRegioneECategoria(@PathVariable("slugCategoria") String slugCategoria,
             @PathVariable("slugRegione") String slugRegione, @RequestParam(defaultValue = "default") String order,
             Model model) {
         List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerRegioneECategoria(slugRegione,

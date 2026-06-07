@@ -1,0 +1,147 @@
+<th:block
+  th:fragment="navbarProdotti(listaCategorie, categoriaSelezionata, regioneSelezionata)"
+>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
+    <div class="container-fluid px-4">
+      <button
+        class="navbar-toggler ms-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div
+        class="collapse navbar-collapse justify-content-center"
+        id="navbarNav"
+      >
+        <ul class="navbar-nav mb-2 mb-lg-0 align-items-center text-center">
+          <li class="nav-item mx-2">
+            <th:block th:if="${regioneSelezionata == null}">
+              <a
+                th:href="@{/backoffice/prodotti/all}"
+                class="nav-link fw-semibold"
+                th:classappend="${categoriaSelezionata == null} ? 'active' : ''"
+              >
+                Tutte le categorie
+              </a>
+            </th:block>
+            <th:block th:unless="${regioneSelezionata == null}">
+              <a
+                th:href="@{/backoffice/prodotti/regione/{slugRegione}(slugRegione=${regioneSelezionata.slug})}"
+                class="nav-link fw-semibold"
+                th:classappend="${categoriaSelezionata == null} ? 'active' : ''"
+              >
+                Tutte le categorie
+              </a>
+            </th:block>
+          </li>
+          <li
+            th:each="categoria : ${listaCategorie}"
+            class="nav-item mx-2"
+            th:object="${categoria}"
+          >
+            <th:block th:if="${regioneSelezionata == null}">
+              <a
+                th:href="@{/backoffice/prodotti/categoria/{slugCategoria}(slugCategoria=*{slug})}"
+                class="nav-link"
+                th:classappend="${categoriaSelezionata != null && categoriaSelezionata.slug == categoria.slug} ? 'active fw-semibold' : 'text-white-50'"
+              >
+                [[*{nome}]]
+              </a>
+            </th:block>
+            <th:block th:if="${regioneSelezionata != null}">
+              <a
+                th:href="@{/backoffice/prodotti/categoria/{slugCategoria}/regione/{slugRegione}(slugCategoria=${categoria.slug}, slugRegione=${regioneSelezionata.slug})}"
+                class="nav-link"
+                th:classappend="${categoriaSelezionata != null
+                && categoriaSelezionata.slug == categoria.slug} ? 'active
+                fw-semibold' : 'text-white-50'"
+              >
+                [[*{nome}]]
+              </a>
+            </th:block>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</th:block>
+
+<th:block
+  th:fragment="navbarVini(listaTipologie, tipologiaSelezionata, regioneSelezionata)"
+>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
+    <div class="container-fluid px-4">
+      <button
+        class="navbar-toggler ms-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div
+        class="collapse navbar-collapse justify-content-center"
+        id="navbarNav"
+      >
+        <ul class="navbar-nav mb-2 mb-lg-0 align-items-center text-center">
+          <li class="nav-item mx-2">
+            <th:block th:if="${regioneSelezionata == null}">
+              <a
+                th:href="@{/backoffice/vini/all}"
+                class="nav-link fw-semibold"
+                th:classappend="${tipologiaSelezionata == null} ? 'active' : ''"
+              >
+                Tutte le categorie
+              </a>
+            </th:block>
+            <th:block th:unless="${regioneSelezionata == null}">
+              <a
+                th:href="@{/backoffice/vini/regione/{slugRegione}(slugRegione=${regioneSelezionata.slug})}"
+                class="nav-link fw-semibold"
+                th:classappend="${tipologiaSelezionata == null} ? 'active' : ''"
+              >
+                Tutte le categorie
+              </a>
+            </th:block>
+          </li>
+          <li
+            th:each="tipologia : ${listaTipologie}"
+            class="nav-item mx-2"
+            th:object="${tipologia}"
+          >
+            <th:block th:if="${regioneSelezionata == null}">
+              <a
+                th:href="@{/backoffice/vini/tipologia/{slugTipologia}(slugTipologia=*{slug})}"
+                class="nav-link"
+                th:classappend="${tipologiaSelezionata != null && tipologiaSelezionata.slug == tipologia.slug} ? 'active fw-semibold' : 'text-white-50'"
+              >
+                [[*{nome}]]
+              </a>
+            </th:block>
+            <th:block th:if="${regioneSelezionata != null}">
+              <a
+                th:href="@{/backoffice/vini/tipologia/{slugTipologia}/regione/{slugRegione}(slugTipologia=${tipologia.slug}, slugRegione=${regioneSelezionata.slug})}"
+                class="nav-link"
+                th:classappend="${tipologiaSelezionata != null
+                && tipologiaSelezionata.slug == tipologia.slug} ? 'active
+                fw-semibold' : 'text-white-50'"
+              >
+                [[*{nome}]]
+              </a>
+            </th:block>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</th:block>
