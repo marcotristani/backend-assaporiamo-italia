@@ -86,4 +86,11 @@ public class VinoController {
         return "vino/index";
     }
 
+    @GetMapping("/dettaglio/{slug}")
+    public String show(@PathVariable("slug") String slug, Model model) {
+        Vino vino = vinoService.getBySlug(slug);
+        model.addAttribute("vino", vino);
+        return "vino/show";
+    }
+
 }

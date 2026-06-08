@@ -86,4 +86,11 @@ public class ProdottoTipicoController {
         return "prodottoTipico/index";
     }
 
+    @GetMapping("/dettaglio/{slug}")
+    public String show(@PathVariable("slug") String slug, Model model) {
+        ProdottoTipico prodottoTipico = prodottoTipicoService.getBySlug(slug);
+        model.addAttribute("prodottoTipico", prodottoTipico);
+        return "prodottoTipico/show";
+    }
+
 }

@@ -16,7 +16,7 @@
           th:href="@{/backoffice/regioni}"
           class="btn btn-outline-secondary btn-sm px-4 fw-semibold shadow-sm"
         >
-          Torna alle regioni
+          Tutte le Regioni
         </a>
         <th:block th:unless="${regioneSelezionata == null}">
           <a
@@ -51,9 +51,17 @@
         </th:block>
       </header>
 
-      <th:block
-        th:replace="~{fragments/bottoneOrdinamento :: bottoneOrdinamentoProdotti( ${categoriaSelezionata}, ${regioneSelezionata})}"
-      />
+      <div class="d-flex justify-content-between mb-3">
+        <a
+          th:href="@{/backoffice/prodotti/create}"
+          class="btn btn-warning btn-sm px-4 fw-bold shadow-sm"
+        >
+          Aggiungi un Prodotto Tipico
+        </a>
+        <th:block
+          th:replace="~{fragments/bottoneOrdinamento :: bottoneOrdinamentoProdotti( ${categoriaSelezionata}, ${regioneSelezionata})}"
+        />
+      </div>
 
       <div class="table-responsive bg-white shadow-sm rounded">
         <table class="table table-hover table-striped mb-0">
@@ -68,12 +76,18 @@
           <tbody>
             <tr th:each="prodotto : ${prodottiTipici}" th:object="${prodotto}">
               <td class="align-middle fw-semibold">[[*{nome}]]</td>
-              <td class="align-middle">[[*{regione.nome}]]</td>
+              <td class="align-middle">
+                <a
+                  th:href="@{/backoffice/regioni/{slugRegione}(slugRegione=*{regione.slug})}"
+                  class="text-decoration-none"
+                  >[[*{regione.nome}]]</a
+                >
+              </td>
               <td class="align-middle">[[*{categoria.nome}]]</td>
               <td class="align-middle text-center">
                 <div class="btn-group btn-group-sm" role="group">
                   <a
-                    th:href="@{/prodotti/dettaglio/{slugProdotto}(slugProdotto=*{slug})}"
+                    th:href="@{/backoffice/prodotti/dettaglio/{slugProdotto}(slugProdotto=*{slug})}"
                     class="btn btn-outline-info"
                     title="Vedi Dettaglio"
                   >
@@ -81,7 +95,7 @@
                   </a>
 
                   <a
-                    th:href="@{/prodotti/modifica/{slugProdotto}(slugProdotto=*{slug})}"
+                    th:href="@{/backoffice/prodotti/modifica/{slugProdotto}(slugProdotto=*{slug})}"
                     class="btn btn-outline-warning"
                     title="Modifica Prodotto"
                   >
@@ -89,7 +103,7 @@
                   </a>
 
                   <a
-                    th:href="@{/prodotti/elimina/{slugProdotto}(slugProdotto=*{slug})}"
+                    th:href="@{/backoffice/prodotti/elimina/{slugProdotto}(slugProdotto=*{slug})}"
                     class="btn btn-outline-danger"
                     title="Elimina Prodotto"
                     onclick="
@@ -103,7 +117,6 @@
                 </div>
               </td>
             </tr>
-            <!-- Messaggio se la lista è vuota -->
             <tr th:if="${#lists.isEmpty(prodottiTipici)}">
               <td colspan="4" class="text-center text-muted py-4">
                 Nessun prodotto tipico trovato.
