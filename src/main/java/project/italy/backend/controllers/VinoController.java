@@ -1,6 +1,7 @@
 package project.italy.backend.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +45,10 @@ public class VinoController {
     @GetMapping("/tipologia/{slugTipologia}")
     public String indexTipologia(@PathVariable("slugTipologia") String slugTipologia,
             @RequestParam(defaultValue = "default") String order, Model model) {
+        Optional<Tipologia> optionalTipologia = tipologiaService.findTipologiaBySlug(slugTipologia);
+        if (optionalTipologia.isEmpty()) {
+            return "error/404";
+        }
         List<Vino> vini = vinoService.getViniPerTipologia(slugTipologia, order);
         List<Tipologia> listaTipologie = tipologiaService.getTipologieOrdinate();
         Tipologia tipologiaSelezionata = tipologiaService.getTipologiaBySlug(slugTipologia);
@@ -58,6 +63,10 @@ public class VinoController {
     @GetMapping("/regione/{slugRegione}")
     public String indexRegione(@PathVariable("slugRegione") String slugRegione,
             @RequestParam(defaultValue = "default") String order, Model model) {
+        Optional<Regione> optionalRegione = regioneService.findRegioneBySlug(slugRegione);
+        if (optionalRegione.isEmpty()) {
+            return "error/404";
+        }
         List<Vino> vini = vinoService.getViniPerRegione(slugRegione, order);
         List<Tipologia> listaTipologie = tipologiaService.getTipologieOrdinate();
         Regione regioneSelezionata = regioneService.getRegioneBySlug(slugRegione);
@@ -73,6 +82,14 @@ public class VinoController {
     public String indexRegioneETipologia(@PathVariable("slugTipologia") String slugTipologia,
             @PathVariable("slugRegione") String slugRegione, @RequestParam(defaultValue = "default") String order,
             Model model) {
+        Optional<Regione> optionalRegione = regioneService.findRegioneBySlug(slugRegione);
+        if (optionalRegione.isEmpty()) {
+            return "error/404";
+        }
+        Optional<Tipologia> optionalTipologia = tipologiaService.findTipologiaBySlug(slugTipologia);
+        if (optionalTipologia.isEmpty()) {
+            return "error/404";
+        }
         List<Vino> vini = vinoService.getViniPerRegioneETipologia(slugRegione,
                 slugTipologia, order);
         List<Tipologia> listaTipologie = tipologiaService.getTipologieOrdinate();
@@ -88,6 +105,10 @@ public class VinoController {
 
     @GetMapping("/dettaglio/{slug}")
     public String show(@PathVariable("slug") String slug, Model model) {
+        Optional<Vino> optionalVino = vinoService.findBySlug(slug);
+        if (optionalVino.isEmpty()) {
+            return "error/404";
+        }
         Vino vino = vinoService.getBySlug(slug);
         model.addAttribute("vino", vino);
         return "vino/show";
