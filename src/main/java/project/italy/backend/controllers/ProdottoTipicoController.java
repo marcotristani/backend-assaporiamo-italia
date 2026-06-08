@@ -1,6 +1,7 @@
 package project.italy.backend.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,8 +45,12 @@ public class ProdottoTipicoController {
     @GetMapping("/categoria/{slugCategoria}")
     public String indexCategoria(@PathVariable("slugCategoria") String slugCategoria,
             @RequestParam(defaultValue = "default") String order, Model model) {
-        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerCategoria(slugCategoria, order);
+        Optional<Categoria> optionalCategoria = categoriaService.findCategoriaBySlug(slugCategoria);
+        if (optionalCategoria.isEmpty()) {
+            return "error/404";
+        }
         List<Categoria> listaCategorie = categoriaService.getCategorieOrdinate();
+        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerCategoria(slugCategoria, order);
         Categoria categoriaSelezionata = categoriaService.getCategoriaBySlug(slugCategoria);
         model.addAttribute("prodottiTipici", prodottiTipici);
         model.addAttribute("listaCategorie", listaCategorie);
@@ -58,6 +63,10 @@ public class ProdottoTipicoController {
     @GetMapping("/regione/{slugRegione}")
     public String indexRegione(@PathVariable("slugRegione") String slugRegione,
             @RequestParam(defaultValue = "default") String order, Model model) {
+        Optional<Regione> optionalRegione = regioneService.findRegioneBySlug(slugRegione);
+        if (optionalRegione.isEmpty()) {
+            return "error/404";
+        }
         List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerRegione(slugRegione, order);
         List<Categoria> listaCategorie = categoriaService.getCategorieOrdinate();
         Regione regioneSelezionata = regioneService.getRegioneBySlug(slugRegione);
@@ -73,6 +82,14 @@ public class ProdottoTipicoController {
     public String indexRegioneECategoria(@PathVariable("slugCategoria") String slugCategoria,
             @PathVariable("slugRegione") String slugRegione, @RequestParam(defaultValue = "default") String order,
             Model model) {
+        Optional<Regione> optionalRegione = regioneService.findRegioneBySlug(slugRegione);
+        if (optionalRegione.isEmpty()) {
+            return "error/404";
+        }
+        Optional<Categoria> optionalCategoria = categoriaService.findCategoriaBySlug(slugCategoria);
+        if (optionalCategoria.isEmpty()) {
+            return "error/404";
+        }
         List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerRegioneECategoria(slugRegione,
                 slugCategoria, order);
         List<Categoria> listaCategorie = categoriaService.getCategorieOrdinate();
@@ -88,6 +105,10 @@ public class ProdottoTipicoController {
 
     @GetMapping("/dettaglio/{slug}")
     public String show(@PathVariable("slug") String slug, Model model) {
+        Optional<ProdottoTipico> optionalProdotto = prodottoTipicoService.findBySlug(slug);
+        if (optionalProdotto.isEmpty()) {
+            return "error/404";
+        }
         ProdottoTipico prodottoTipico = prodottoTipicoService.getBySlug(slug);
         model.addAttribute("prodottoTipico", prodottoTipico);
         return "prodottoTipico/show";
