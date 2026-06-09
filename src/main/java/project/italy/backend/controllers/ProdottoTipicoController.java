@@ -241,7 +241,7 @@ public class ProdottoTipicoController {
     }
 
     @GetMapping("/{slug}/edit")
-    public String modify(@PathVariable("slug") String slug, Model model) {
+    public String edit(@PathVariable("slug") String slug, Model model) {
         Optional<ProdottoTipico> optionalProdotto = prodottoTipicoService.findBySlug(slug);
         if (optionalProdotto.isEmpty()) {
             return "error/404";
@@ -254,6 +254,53 @@ public class ProdottoTipicoController {
         model.addAttribute("nuovoProdottoTipico", prodottoTipico);
         model.addAttribute("edit", true);
         return "prodottoTipico/create-or-edit";
+    }
+
+    @PostMapping("/{slug}/edit")
+    public String modify(@PathVariable("slug") String slug,
+            @Valid @ModelAttribute("nuovoProdottoTipico") ProdottoTipico formProdottoTipico,
+            BindingResult bindingResult, Model model) {
+        Optional<ProdottoTipico> optionalProdotto = prodottoTipicoService.findBySlug(slug);
+        if (optionalProdotto.isEmpty()) {
+            return "error/404";
+        }
+        ProdottoTipico prodottoDaModificare = prodottoTipicoService.getBySlug(slug);
+        List<Regione> listaRegioni = regioneService.getRegioniOrdinate();
+        List<Categoria> listaCategorie = categoriaService.getCategorieOrdinate();
+
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(error -> System.out.println("TEST ERRORE FORM: " + error.toString()));
+            model.addAttribute("listaCategorie", listaCategorie);
+            model.addAttribute("listaRegioni", listaRegioni);
+
+            return "prodottoTipico/create-or-edit";
+        }
+
+        Optional<Regione> optionalRegioneSelezionata = regioneService
+                .findRegioneBySlug(formProdottoTipico.getRegione().getSlug());
+        if (optionalRegioneSelezionata.isEmpty()) {
+            model.addAttribute("listaCategorie", listaCategorie);
+            model.addAttribute("listaRegioni", listaRegioni);
+
+            return "prodottoTipico/create-or-edit";
+        }
+        Regione regioneSelezionata = optionalRegioneSelezionata.get();
+
+        Optional<Categoria> optionalCategoriaSelezionata = categoriaService
+                .findCategoriaBySlug(formProdottoTipico.getCategoria().getSlug());
+        if (optionalCategoriaSelezionata.isEmpty()) {
+            model.addAttribute("listaCategorie", listaCategorie);
+            model.addAttribute("listaRegioni", listaRegioni);
+
+            return "prodottoTipico/create-or-edit";
+        }
+        Categoria categoriaSelezionata = optionalCategoriaSelezionata.get();
+
+        ProdottoTipico prodottoModificato = prodottoTipicoService.update(prodottoDaModificare, formProdottoTipico,
+                regioneSelezionata,
+                categoriaSelezionata);
+
+        return "redirect:/backoffice/prodotti/dettaglio/" + prodottoModificato.getSlug();
     }
 
 }

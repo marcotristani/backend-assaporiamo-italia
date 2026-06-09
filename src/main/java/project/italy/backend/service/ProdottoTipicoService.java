@@ -98,4 +98,18 @@ public class ProdottoTipicoService {
     public ProdottoTipico save(ProdottoTipico prodottoTipico) {
         return prodottoTipicoRepository.save(prodottoTipico);
     }
+
+    public ProdottoTipico update(ProdottoTipico prodottoDaModificare, ProdottoTipico formProdotto, Regione regione,
+            Categoria categoria) {
+
+        prodottoDaModificare.setNome(formProdotto.getNome());
+        prodottoDaModificare.setDescrizione(formProdotto.getDescrizione());
+        prodottoDaModificare.setLinkStore(formProdotto.getLinkStore());
+        prodottoDaModificare.setUrlImmagine(formProdotto.getUrlImmagine());
+
+        prodottoDaModificare.setRegione(regione);
+        prodottoDaModificare.setCategoria(categoria);
+
+        return prodottoTipicoRepository.save(prodottoDaModificare);
+    }
 }

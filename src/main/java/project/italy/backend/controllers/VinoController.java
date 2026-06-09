@@ -260,4 +260,51 @@ public class VinoController {
         return "vino/create-or-edit";
     }
 
+    @PostMapping("/{slug}/edit")
+    public String modify(@PathVariable("slug") String slug,
+            @Valid @ModelAttribute("nuovoVino") Vino formVino,
+            BindingResult bindingResult, Model model) {
+        Optional<Vino> optionalVino = vinoService.findBySlug(slug);
+        if (optionalVino.isEmpty()) {
+            return "error/404";
+        }
+        Vino vinoDaModificare = vinoService.getBySlug(slug);
+        List<Regione> listaRegioni = regioneService.getRegioniOrdinate();
+        List<Tipologia> listaTipologie = tipologiaService.getTipologieOrdinate();
+
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(error -> System.out.println("TEST ERRORE FORM: " + error.toString()));
+            model.addAttribute("listaTipologie", listaTipologie);
+            model.addAttribute("listaRegioni", listaRegioni);
+
+            return "vino/create-or-edit";
+        }
+
+        Optional<Regione> optionalRegioneSelezionata = regioneService
+                .findRegioneBySlug(formVino.getRegione().getSlug());
+        if (optionalRegioneSelezionata.isEmpty()) {
+            model.addAttribute("listaTipologie", listaTipologie);
+            model.addAttribute("listaRegioni", listaRegioni);
+
+            return "vino/create-or-edit";
+        }
+        Regione regioneSelezionata = optionalRegioneSelezionata.get();
+
+        Optional<Tipologia> optionalTipologia = tipologiaService
+                .findTipologiaBySlug(formVino.getTipologia().getSlug());
+        if (optionalTipologia.isEmpty()) {
+            model.addAttribute("listaTipologie", listaTipologie);
+            model.addAttribute("listaRegioni", listaRegioni);
+
+            return "vino/create-or-edit";
+        }
+        Tipologia tipologiaSelezionata = optionalTipologia.get();
+
+        Vino vinoModificato = vinoService.update(vinoDaModificare, formVino,
+                regioneSelezionata,
+                tipologiaSelezionata);
+
+        return "redirect:/backoffice/vini/dettaglio/" + vinoModificato.getSlug();
+    }
+
 }

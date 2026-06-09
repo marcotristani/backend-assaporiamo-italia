@@ -23,6 +23,31 @@
           required
         />
       </div>
+      <th:block th:if="${nomeElemento.equals('Vino')}">
+        <div class="mb-3">
+          <label
+            for="certificazione"
+            class="form-label text-muted small fw-bold"
+            >Certificazione</label
+          >
+          <select
+            id="certificazione"
+            th:field="*{certificazione}"
+            class="form-select"
+          >
+            <option value="" hidden>Nessuna Certificazione</option>
+            <option value="DOC">
+              DOC (Denominazione di Origine Controllata)
+            </option>
+            <option value="DOCG">
+              DOCG (Denominazione di Origine Controllata e Garantita)
+            </option>
+            <option value="IGT">IGT (Indicazione Geografica Tipica)</option>
+            <option value="DOP">DOP (Denominazione di Origine Protetta)</option>
+            <option value="IGP">IGP (Indicazione Geografica Protetta)</option>
+          </select>
+        </div>
+      </th:block>
 
       <div class="row">
         <div class="col-12 col-md-6 mb-3">

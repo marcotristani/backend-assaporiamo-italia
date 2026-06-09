@@ -96,4 +96,18 @@ public class VinoService {
     public Vino save(Vino vino) {
         return vinoRepository.save(vino);
     }
+
+    public Vino update(Vino vinoDaModificare, Vino formVino, Regione regione,
+            Tipologia tipologia) {
+
+        vinoDaModificare.setNome(formVino.getNome());
+        vinoDaModificare.setDescrizione(formVino.getDescrizione());
+        vinoDaModificare.setLinkStore(formVino.getLinkStore());
+        vinoDaModificare.setUrlImmagine(formVino.getUrlImmagine());
+        vinoDaModificare.setCertificazione(formVino.getCertificazione());
+        vinoDaModificare.setRegione(regione);
+        vinoDaModificare.setTipologia(tipologia);
+
+        return vinoRepository.save(vinoDaModificare);
+    }
 }
