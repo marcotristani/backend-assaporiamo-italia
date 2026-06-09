@@ -122,13 +122,22 @@
         <div
           class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3"
         >
-          <h3 class="h5 fw-bold text-dark mb-0">Prodotti Tipici Associati</h3>
-          <a
-            th:href="@{/backoffice/prodotti/all}"
-            class="btn btn-sm btn-outline-primary fw-semibold"
-          >
-            Vedi tutti i Prodotti Tipici
-          </a>
+          <h3 class="h5 fw-bold text-dark mb-0">Vini Associati</h3>
+
+          <div class="d-flex gap-2">
+            <a
+              th:href="@{/backoffice/vini/all}"
+              class="btn btn-sm btn-outline-secondary fw-semibold shadow-sm"
+            >
+              Vedi tutti i Prodotti
+            </a>
+            <a
+              th:href="@{/backoffice/vini/dettaglio/{slug}/gestisci-prodotti(slug=*{slug})}"
+              class="btn btn-sm btn-outline-primary fw-semibold shadow-sm"
+            >
+              Gestisci Prodotti Collegati
+            </a>
+          </div>
         </div>
 
         <div

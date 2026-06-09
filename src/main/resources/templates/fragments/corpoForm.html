@@ -1,0 +1,148 @@
+<th:block
+  th:fragment="corpoForm(nomeElemento, listaRegioni, listaCategorieOrTipologie)"
+>
+  <div class="col-12 col-lg-7">
+    <main class="card shadow-sm p-4 bg-white rounded-3 h-100">
+      <h2 class="h5 fw-bold text-dark border-bottom pb-2 mb-3">
+        Informazioni Principali
+      </h2>
+
+      <div class="mb-3">
+        <label
+          for="nome"
+          class="form-label text-muted small fw-bold"
+          th:text="'Nome ' + ${nomeElemento}"
+          >Nome</label
+        >
+        <input
+          type="text"
+          id="nome"
+          th:field="*{nome}"
+          class="form-control"
+          th:placeholder="'Inserire nome del ' + ${nomeElemento} + ' ...'"
+          required
+        />
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-md-6 mb-3">
+          <label for="regione" class="form-label text-muted small fw-bold"
+            >Regione</label
+          >
+          <select
+            id="regione"
+            th:field="*{regione.slug}"
+            class="form-select"
+            required
+          >
+            <option value="" hidden>Seleziona una regione...</option>
+            <option
+              th:each="regioneSelezione : ${listaRegioni}"
+              th:value="${regioneSelezione.slug}"
+              th:text="${regioneSelezione.nome}"
+            ></option>
+          </select>
+        </div>
+        <th:block th:unless="${nomeElemento.equals('Vino')}">
+          <div class="col-12 col-md-6 mb-3">
+            <label for="categoria" class="form-label text-muted small fw-bold"
+              >Categoria</label
+            >
+            <select
+              id="categoria"
+              th:field="*{categoria.slug}"
+              class="form-select"
+              required
+            >
+              <option value="" hidden>Seleziona una categoria...</option>
+              <option
+                th:each="categoriaSelezione : ${listaCategorieOrTipologie}"
+                th:value="${categoriaSelezione.slug}"
+                th:text="${categoriaSelezione.nome}"
+              ></option>
+            </select>
+          </div>
+        </th:block>
+        <th:block th:if="${nomeElemento.equals('Vino')}">
+          <div class="col-12 col-md-6 mb-3">
+            <label for="categoria" class="form-label text-muted small fw-bold"
+              >Tipologia</label
+            >
+            <select
+              id="tipologia"
+              th:field="*{tipologia.slug}"
+              class="form-select"
+              required
+            >
+              <option value="" hidden>Seleziona una tipologia...</option>
+              <option
+                th:each="tipologiaSelezione : ${listaCategorieOrTipologie}"
+                th:value="${tipologiaSelezione.slug}"
+                th:text="${tipologiaSelezione.nome}"
+              ></option>
+            </select>
+          </div>
+        </th:block>
+      </div>
+
+      <div class="mb-3">
+        <label for="linkStore" class="form-label text-muted small fw-bold"
+          >URL Link Store (Acquisto)</label
+        >
+        <input
+          type="url"
+          id="linkStore"
+          th:field="*{linkStore}"
+          class="form-control font-monospace text-primary small"
+          placeholder="https://example.com"
+        />
+      </div>
+
+      <div class="mb-0">
+        <label for="urlImmagine" class="form-label text-muted small fw-bold"
+          >URL Immagine di Copertina</label
+        >
+        <input
+          type="text"
+          id="urlImmagine"
+          th:field="*{urlImmagine}"
+          class="form-control font-monospace small text-muted"
+          placeholder="https://example.com"
+          required
+        />
+      </div>
+    </main>
+  </div>
+
+  <div class="col-12 col-lg-5">
+    <div
+      class="card shadow-sm p-4 bg-white rounded-3 h-100 d-flex flex-column justify-content-between"
+    >
+      <div>
+        <h2 class="h5 fw-bold text-dark border-bottom pb-2 mb-3">
+          Descrizione Completa
+        </h2>
+        <div class="mb-0">
+          <textarea
+            id="descrizione"
+            th:field="*{descrizione}"
+            rows="9"
+            class="form-control text-muted small lh-base"
+            placeholder="Inserisci la descrizione del prodotto tipico ..."
+            required
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="mt-4 pt-3 border-top">
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg w-100 py-2 shadow-sm fw-bold"
+          th:text="${edit} ? 'Salva Modifiche ' : 'Crea Scheda '"
+        >
+          Scritta Bottone
+        </button>
+      </div>
+    </div>
+  </div>
+</th:block>

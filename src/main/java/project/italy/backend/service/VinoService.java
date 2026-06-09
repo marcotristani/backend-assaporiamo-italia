@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import project.italy.backend.models.ProdottoTipico;
 import project.italy.backend.models.Regione;
 import project.italy.backend.models.Tipologia;
 import project.italy.backend.models.Vino;
@@ -82,5 +83,17 @@ public class VinoService {
         }
 
         return vinoRepository.findByProdottiTipiciSlug(slugProdotto);
+    }
+
+    public Vino create(Vino nuovoVino, Regione regioneSelezionata,
+            Tipologia tipologiaSelezionata, List<ProdottoTipico> prodottiSelezionati) {
+        nuovoVino.setRegione(regioneSelezionata);
+        nuovoVino.setTipologia(tipologiaSelezionata);
+        nuovoVino.setProdottiTipici(prodottiSelezionati);
+        return vinoRepository.save(nuovoVino);
+    }
+
+    public Vino save(Vino vino) {
+        return vinoRepository.save(vino);
     }
 }
