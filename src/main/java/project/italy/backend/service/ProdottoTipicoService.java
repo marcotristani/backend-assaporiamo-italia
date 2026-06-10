@@ -112,4 +112,15 @@ public class ProdottoTipicoService {
 
         return prodottoTipicoRepository.save(prodottoDaModificare);
     }
+
+    public void delete(ProdottoTipico prodottoTipico) {
+        List<Vino> viniAssociati = prodottoTipico.getVini();
+        for (Vino vino : viniAssociati) {
+            if (vino.getProdottiTipici() != null) {
+                vino.getProdottiTipici().remove(prodottoTipico);
+            }
+        }
+
+        prodottoTipicoRepository.delete(prodottoTipico);
+    }
 }

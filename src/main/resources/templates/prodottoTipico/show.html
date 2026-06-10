@@ -24,12 +24,18 @@
           >
             Modifica
           </a>
-          <a
-            th:href="@{/backoffice/prodotto/{id}/elimina(id=*{id})}"
+
+          <button
+            type="submit"
             class="btn btn-danger btn-sm px-4 fw-semibold shadow-sm"
+            data-bs-toggle="modal"
+            th:data-bs-target="'#delete-prodotto-' + *{slug}"
           >
             Elimina
-          </a>
+          </button>
+          <div
+            th:replace="~{fragments/delete-modal :: delete-modal(${prodottoTipico}, 'prodotto')}"
+          ></div>
         </div>
       </div>
 

@@ -19,10 +19,19 @@
           id="nome"
           th:field="*{nome}"
           class="form-control"
+          th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'"
           th:placeholder="'Inserire nome del ' + ${nomeElemento} + ' ...'"
           required
         />
+        <div
+          class="invalid-feedback d-block"
+          th:if="${#fields.hasErrors('nome')}"
+          th:errors="*{nome}"
+        >
+          Errore Nome
+        </div>
       </div>
+
       <th:block th:if="${nomeElemento.equals('Vino')}">
         <div class="mb-3">
           <label
@@ -34,6 +43,7 @@
             id="certificazione"
             th:field="*{certificazione}"
             class="form-select"
+            th:classappend="${#fields.hasErrors('certificazione')} ? 'is-invalid'"
           >
             <option value="" hidden>Nessuna Certificazione</option>
             <option value="DOC">
@@ -46,6 +56,13 @@
             <option value="DOP">DOP (Denominazione di Origine Protetta)</option>
             <option value="IGP">IGP (Indicazione Geografica Protetta)</option>
           </select>
+          <div
+            class="invalid-feedback d-block"
+            th:if="${#fields.hasErrors('certificazione')}"
+            th:errors="*{certificazione}"
+          >
+            Errore Certificazione
+          </div>
         </div>
       </th:block>
 
@@ -58,6 +75,7 @@
             id="regione"
             th:field="*{regione.slug}"
             class="form-select"
+            th:classappend="${#fields.hasErrors('regione.slug')} ? 'is-invalid'"
             required
           >
             <option value="" hidden>Seleziona una regione...</option>
@@ -67,7 +85,15 @@
               th:text="${regioneSelezione.nome}"
             ></option>
           </select>
+          <div
+            class="invalid-feedback d-block"
+            th:if="${#fields.hasErrors('regione.slug')}"
+            th:errors="*{regione.slug}"
+          >
+            Errore Regione
+          </div>
         </div>
+
         <th:block th:unless="${nomeElemento.equals('Vino')}">
           <div class="col-12 col-md-6 mb-3">
             <label for="categoria" class="form-label text-muted small fw-bold"
@@ -77,6 +103,7 @@
               id="categoria"
               th:field="*{categoria.slug}"
               class="form-select"
+              th:classappend="${#fields.hasErrors('categoria.slug')} ? 'is-invalid'"
               required
             >
               <option value="" hidden>Seleziona una categoria...</option>
@@ -86,17 +113,26 @@
                 th:text="${categoriaSelezione.nome}"
               ></option>
             </select>
+            <div
+              class="invalid-feedback d-block"
+              th:if="${#fields.hasErrors('categoria.slug')}"
+              th:errors="*{categoria.slug}"
+            >
+              Errore Categoria
+            </div>
           </div>
         </th:block>
+
         <th:block th:if="${nomeElemento.equals('Vino')}">
           <div class="col-12 col-md-6 mb-3">
-            <label for="categoria" class="form-label text-muted small fw-bold"
+            <label for="tipologia" class="form-label text-muted small fw-bold"
               >Tipologia</label
             >
             <select
               id="tipologia"
               th:field="*{tipologia.slug}"
               class="form-select"
+              th:classappend="${#fields.hasErrors('tipologia.slug')} ? 'is-invalid'"
               required
             >
               <option value="" hidden>Seleziona una tipologia...</option>
@@ -106,6 +142,13 @@
                 th:text="${tipologiaSelezione.nome}"
               ></option>
             </select>
+            <div
+              class="invalid-feedback d-block"
+              th:if="${#fields.hasErrors('tipologia.slug')}"
+              th:errors="*{tipologia.slug}"
+            >
+              Errore Tipologia
+            </div>
           </div>
         </th:block>
       </div>
@@ -119,8 +162,16 @@
           id="linkStore"
           th:field="*{linkStore}"
           class="form-control font-monospace text-primary small"
+          th:classappend="${#fields.hasErrors('linkStore')} ? 'is-invalid'"
           placeholder="https://example.com"
         />
+        <div
+          class="invalid-feedback d-block"
+          th:if="${#fields.hasErrors('linkStore')}"
+          th:errors="*{linkStore}"
+        >
+          Errore Link Store
+        </div>
       </div>
 
       <div class="mb-0">
@@ -132,9 +183,17 @@
           id="urlImmagine"
           th:field="*{urlImmagine}"
           class="form-control font-monospace small text-muted"
+          th:classappend="${#fields.hasErrors('urlImmagine')} ? 'is-invalid'"
           placeholder="https://example.com"
           required
         />
+        <div
+          class="invalid-feedback d-block"
+          th:if="${#fields.hasErrors('urlImmagine')}"
+          th:errors="*{urlImmagine}"
+        >
+          Errore URL Immagine
+        </div>
       </div>
     </main>
   </div>
@@ -153,9 +212,17 @@
             th:field="*{descrizione}"
             rows="9"
             class="form-control text-muted small lh-base"
+            th:classappend="${#fields.hasErrors('descrizione')} ? 'is-invalid'"
             placeholder="Inserisci la descrizione del prodotto tipico ..."
             required
           ></textarea>
+          <div
+            class="invalid-feedback d-block"
+            th:if="${#fields.hasErrors('descrizione')}"
+            th:errors="*{descrizione}"
+          >
+            Errore Descrizione
+          </div>
         </div>
       </div>
 

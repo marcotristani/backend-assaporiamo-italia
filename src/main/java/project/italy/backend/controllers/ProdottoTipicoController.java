@@ -303,4 +303,17 @@ public class ProdottoTipicoController {
         return "redirect:/backoffice/prodotti/dettaglio/" + prodottoModificato.getSlug();
     }
 
+    @PostMapping("/{slug}/delete")
+    public String delete(@PathVariable("slug") String slug, Model model) {
+        Optional<ProdottoTipico> optionalProdotto = prodottoTipicoService.findBySlug(slug);
+        if (optionalProdotto.isEmpty()) {
+            return "error/404";
+        }
+
+        ProdottoTipico prodottoDaEliminare = prodottoTipicoService.getBySlug(slug);
+
+        prodottoTipicoService.delete(prodottoDaEliminare);
+        return "redirect:/backoffice/prodotti/all";
+    }
+
 }

@@ -307,4 +307,17 @@ public class VinoController {
         return "redirect:/backoffice/vini/dettaglio/" + vinoModificato.getSlug();
     }
 
+    @PostMapping("/{slug}/delete")
+    public String delete(@PathVariable("slug") String slug, Model model) {
+        Optional<Vino> optionalVino = vinoService.findBySlug(slug);
+        if (optionalVino.isEmpty()) {
+            return "error/404";
+        }
+
+        Vino vinoDaEliminare = vinoService.getBySlug(slug);
+
+        vinoService.delete(vinoDaEliminare);
+        return "redirect:/backoffice/vini/all";
+    }
+
 }

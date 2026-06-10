@@ -102,18 +102,17 @@
                     Modifica
                   </a>
 
-                  <a
-                    th:href="@{/backoffice/prodotti/elimina/{slugProdotto}(slugProdotto=*{slug})}"
+                  <button
+                    type="submit"
                     class="btn btn-outline-danger"
-                    title="Elimina Prodotto"
-                    onclick="
-                      return confirm(
-                        'Sei sicuro di voler eliminare questo prodotto?',
-                      );
-                    "
+                    data-bs-toggle="modal"
+                    th:data-bs-target="'#delete-prodotto-' + *{slug}"
                   >
                     Elimina
-                  </a>
+                  </button>
+                  <div
+                    th:replace="~{fragments/delete-modal :: delete-modal(${prodotto}, 'prodotto')}"
+                  ></div>
                 </div>
               </td>
             </tr>
@@ -126,6 +125,7 @@
         </table>
       </div>
     </div>
+
     <th:block th:replace="~{fragments/headScript :: script}" />
   </body>
 </html>
