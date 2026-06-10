@@ -32,44 +32,77 @@ public class VinoService {
         return vinoRepository.findBySlug(slugVino).get();
     }
 
-    public List<Vino> findAllViniOrdinati(String order) {
-        if (order.equalsIgnoreCase("alfabetico")) {
+    public List<Vino> findAllViniOrdinati(String order, String ricerca) {
+        if (order.equalsIgnoreCase("alfabetico") && ricerca.isBlank()) {
             return vinoRepository.findAllByOrderByNomeAsc();
+        }
+        if (order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return vinoRepository.findByNomeContainingIgnoreCaseOrderByNomeAsc(ricerca);
+        }
+        if (!order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return vinoRepository.findByNomeContainingIgnoreCase(ricerca);
         }
         return vinoRepository.findAll();
     }
 
-    public List<Vino> getViniPerRegione(String slugRegione, String order) {
+    public List<Vino> getViniPerRegione(String slugRegione, String order, String ricerca) {
 
         Regione regione = regioneService.getRegioneBySlug(slugRegione);
-
-        if (order.equalsIgnoreCase("alfabetico")) {
+        if (order.equalsIgnoreCase("alfabetico") && ricerca.isBlank()) {
             return vinoRepository.findByRegioneOrderByNomeAsc(regione);
+        }
+
+        if (order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return vinoRepository.findByRegioneAndNomeContainingIgnoreCaseOrderByNomeAsc(regione, ricerca);
+        }
+
+        if (!order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return vinoRepository.findByRegioneAndNomeContainingIgnoreCase(regione, ricerca);
         }
 
         return vinoRepository.findByRegione(regione);
     }
 
-    public List<Vino> getViniPerTipologia(String slugTipologia, String order) {
+    public List<Vino> getViniPerTipologia(String slugTipologia, String order, String ricerca) {
 
         Tipologia tipologia = tipologiaService.getTipologiaBySlug(slugTipologia);
 
-        if (order.equalsIgnoreCase("alfabetico")) {
+        if (order.equalsIgnoreCase("alfabetico") && ricerca.isBlank()) {
             return vinoRepository.findByTipologiaOrderByNomeAsc(tipologia);
+        }
+
+        if (order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return vinoRepository.findByTipologiaAndNomeContainingIgnoreCaseOrderByNomeAsc(tipologia,
+                    ricerca);
+        }
+
+        if (!order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return vinoRepository.findByTipologiaAndNomeContainingIgnoreCase(tipologia, ricerca);
         }
 
         return vinoRepository.findByTipologia(tipologia);
     }
 
     public List<Vino> getViniPerRegioneETipologia(String slugRegione, String slugTipologia,
-            String order) {
+            String order, String ricerca) {
 
         Regione regione = regioneService.getRegioneBySlug(slugRegione);
 
         Tipologia tipologia = tipologiaService.getTipologiaBySlug(slugTipologia);
 
-        if (order.equalsIgnoreCase("alfabetico")) {
+        if (order.equalsIgnoreCase("alfabetico") && ricerca.isBlank()) {
             return vinoRepository.findByRegioneAndTipologiaOrderByNomeAsc(regione, tipologia);
+        }
+
+        if (order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return vinoRepository.findByRegioneAndTipologiaAndNomeContainingIgnoreCaseOrderByNomeAsc(regione,
+                    tipologia,
+                    ricerca);
+        }
+
+        if (!order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return vinoRepository.findByRegioneAndTipologiaAndNomeContainingIgnoreCase(regione, tipologia,
+                    ricerca);
         }
 
         return vinoRepository.findByRegioneAndTipologia(regione, tipologia);

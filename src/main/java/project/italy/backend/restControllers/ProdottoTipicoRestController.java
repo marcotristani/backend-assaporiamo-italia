@@ -42,32 +42,35 @@ public class ProdottoTipicoRestController {
     VinoService vinoService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<ProdottoTipico>> index(@RequestParam(defaultValue = "default") String order) {
-        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.findAllProdottiOrdinati(order);
+    public ResponseEntity<List<ProdottoTipico>> index(@RequestParam(defaultValue = "default") String order,
+            @RequestParam(defaultValue = "") String ricerca) {
+        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.findAllProdottiOrdinati(order, ricerca);
         return new ResponseEntity<List<ProdottoTipico>>(prodottiTipici, HttpStatus.OK);
     }
 
     @GetMapping("/regione/{slugRegione}")
     public ResponseEntity<List<ProdottoTipico>> indexRegione(@PathVariable("slugRegione") String slugRegione,
-            @RequestParam(defaultValue = "default") String order) {
+            @RequestParam(defaultValue = "default") String order,
+            @RequestParam(defaultValue = "") String ricerca) {
         Optional<Regione> optionalRegione = regioneService.findRegioneBySlug(slugRegione);
 
         if (optionalRegione.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerRegione(slugRegione, order);
+        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerRegione(slugRegione, order, ricerca);
         return new ResponseEntity<List<ProdottoTipico>>(prodottiTipici, HttpStatus.OK);
     }
 
     @GetMapping("/categoria/{slugCategoria}")
     public ResponseEntity<List<ProdottoTipico>> indexCategoria(@PathVariable("slugCategoria") String slugCategoria,
-            @RequestParam(defaultValue = "default") String order) {
+            @RequestParam(defaultValue = "default") String order, @RequestParam(defaultValue = "") String ricerca) {
 
         Optional<Categoria> optionalCategoria = categoriaService.findCategoriaBySlug(slugCategoria);
         if (optionalCategoria.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerCategoria(slugCategoria, order);
+        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerCategoria(slugCategoria, order,
+                ricerca);
         return new ResponseEntity<List<ProdottoTipico>>(prodottiTipici, HttpStatus.OK);
     }
 
@@ -75,7 +78,7 @@ public class ProdottoTipicoRestController {
     public ResponseEntity<List<ProdottoTipico>> indexRegioneECategoria(
             @PathVariable("slugRegione") String slugRegione,
             @PathVariable("slugCategoria") String slugCategoria,
-            @RequestParam(defaultValue = "default") String order) {
+            @RequestParam(defaultValue = "default") String order, @RequestParam(defaultValue = "") String ricerca) {
 
         Optional<Regione> optionalRegione = regioneService.findRegioneBySlug(slugRegione);
         Optional<Categoria> optionalCategoria = categoriaService.findCategoriaBySlug(slugCategoria);
@@ -84,7 +87,7 @@ public class ProdottoTipicoRestController {
         }
 
         List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerRegioneECategoria(slugRegione,
-                slugCategoria, order);
+                slugCategoria, order, ricerca);
         return new ResponseEntity<List<ProdottoTipico>>(prodottiTipici, HttpStatus.OK);
     }
 

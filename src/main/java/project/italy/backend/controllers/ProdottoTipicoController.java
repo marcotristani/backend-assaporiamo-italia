@@ -42,8 +42,9 @@ public class ProdottoTipicoController {
     VinoService vinoService;
 
     @GetMapping("/all")
-    public String index(@RequestParam(defaultValue = "default") String order, Model model) {
-        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.findAllProdottiOrdinati(order);
+    public String index(@RequestParam(defaultValue = "default") String order,
+            @RequestParam(defaultValue = "") String ricerca, Model model) {
+        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.findAllProdottiOrdinati(order, ricerca);
         List<Categoria> listaCategorie = categoriaService.getCategorieOrdinate();
         model.addAttribute("prodottiTipici", prodottiTipici);
         model.addAttribute("listaCategorie", listaCategorie);
@@ -55,13 +56,15 @@ public class ProdottoTipicoController {
 
     @GetMapping("/categoria/{slugCategoria}")
     public String indexCategoria(@PathVariable("slugCategoria") String slugCategoria,
-            @RequestParam(defaultValue = "default") String order, Model model) {
+            @RequestParam(defaultValue = "default") String order, @RequestParam(defaultValue = "") String ricerca,
+            Model model) {
         Optional<Categoria> optionalCategoria = categoriaService.findCategoriaBySlug(slugCategoria);
         if (optionalCategoria.isEmpty()) {
             return "error/404";
         }
         List<Categoria> listaCategorie = categoriaService.getCategorieOrdinate();
-        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerCategoria(slugCategoria, order);
+        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerCategoria(slugCategoria, order,
+                ricerca);
         Categoria categoriaSelezionata = categoriaService.getCategoriaBySlug(slugCategoria);
         model.addAttribute("prodottiTipici", prodottiTipici);
         model.addAttribute("listaCategorie", listaCategorie);
@@ -73,12 +76,13 @@ public class ProdottoTipicoController {
 
     @GetMapping("/regione/{slugRegione}")
     public String indexRegione(@PathVariable("slugRegione") String slugRegione,
-            @RequestParam(defaultValue = "default") String order, Model model) {
+            @RequestParam(defaultValue = "default") String order,
+            @RequestParam(defaultValue = "") String ricerca, Model model) {
         Optional<Regione> optionalRegione = regioneService.findRegioneBySlug(slugRegione);
         if (optionalRegione.isEmpty()) {
             return "error/404";
         }
-        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerRegione(slugRegione, order);
+        List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerRegione(slugRegione, order, ricerca);
         List<Categoria> listaCategorie = categoriaService.getCategorieOrdinate();
         Regione regioneSelezionata = regioneService.getRegioneBySlug(slugRegione);
         model.addAttribute("prodottiTipici", prodottiTipici);
@@ -92,6 +96,7 @@ public class ProdottoTipicoController {
     @GetMapping("/categoria/{slugCategoria}/regione/{slugRegione}")
     public String indexRegioneECategoria(@PathVariable("slugCategoria") String slugCategoria,
             @PathVariable("slugRegione") String slugRegione, @RequestParam(defaultValue = "default") String order,
+            @RequestParam(defaultValue = "") String ricerca,
             Model model) {
         Optional<Regione> optionalRegione = regioneService.findRegioneBySlug(slugRegione);
         if (optionalRegione.isEmpty()) {
@@ -102,7 +107,7 @@ public class ProdottoTipicoController {
             return "error/404";
         }
         List<ProdottoTipico> prodottiTipici = prodottoTipicoService.getProdottiPerRegioneECategoria(slugRegione,
-                slugCategoria, order);
+                slugCategoria, order, ricerca);
         List<Categoria> listaCategorie = categoriaService.getCategorieOrdinate();
         Categoria categoriaSelezionata = categoriaService.getCategoriaBySlug(slugCategoria);
         Regione regioneSelezionata = regioneService.getRegioneBySlug(slugRegione);
@@ -178,14 +183,15 @@ public class ProdottoTipicoController {
     }
 
     @GetMapping("/dettaglio/{slug}/gestisci-vini")
-    public String mostraGestioneVini(@PathVariable("slug") String slug, Model model) {
+    public String mostraGestioneVini(@PathVariable("slug") String slug, @RequestParam(defaultValue = "") String ricerca,
+            Model model) {
         Optional<ProdottoTipico> optionalProdottoTipico = prodottoTipicoService.findBySlug(slug);
         if (optionalProdottoTipico.isEmpty()) {
             return "error/404";
         }
         ProdottoTipico prodotto = prodottoTipicoService.getBySlug(slug);
 
-        List<Vino> listaVini = vinoService.findAllViniOrdinati("alfabetico");
+        List<Vino> listaVini = vinoService.findAllViniOrdinati("alfabetico", ricerca);
 
         model.addAttribute("prodottoTipico", prodotto);
         model.addAttribute("listaVini", listaVini);

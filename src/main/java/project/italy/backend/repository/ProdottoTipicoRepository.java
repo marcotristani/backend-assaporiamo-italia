@@ -42,4 +42,26 @@ public interface ProdottoTipicoRepository extends JpaRepository<ProdottoTipico, 
     List<ProdottoTipico> findByRegioneAndCategoriaOrderByNomeAsc(Regione regione, Categoria categoria);
 
     List<ProdottoTipico> findByViniSlugOrderByNomeAsc(String slugVino);
+
+    List<ProdottoTipico> findByNomeContainingIgnoreCase(String nome);
+
+    List<ProdottoTipico> findByNomeContainingIgnoreCaseOrderByNomeAsc(String nome);
+
+    List<ProdottoTipico> findByRegioneAndNomeContainingIgnoreCase(Regione regione, String nome);
+
+    List<ProdottoTipico> findByRegioneAndNomeContainingIgnoreCaseOrderByNomeAsc(Regione regione, String nome);
+
+    List<ProdottoTipico> findByCategoriaAndNomeContainingIgnoreCase(Categoria categoria, String nome);
+
+    List<ProdottoTipico> findByCategoriaAndNomeContainingIgnoreCaseOrderByNomeAsc(Categoria categoria, String nome);
+
+    List<ProdottoTipico> findByRegioneAndCategoriaAndNomeContainingIgnoreCase(
+            Regione regione,
+            Categoria categoria,
+            String nome);
+
+    List<ProdottoTipico> findByRegioneAndCategoriaAndNomeContainingIgnoreCaseOrderByNomeAsc(
+            Regione regione,
+            Categoria categoria,
+            String nome);
 }

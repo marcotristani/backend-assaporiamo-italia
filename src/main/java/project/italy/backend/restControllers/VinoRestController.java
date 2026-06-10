@@ -41,35 +41,36 @@ public class VinoRestController {
     ProdottoTipicoService prodottoTipicoService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Vino>> index(@RequestParam(defaultValue = "default") String order) {
-        List<Vino> vini = vinoService.findAllViniOrdinati(order);
+    public ResponseEntity<List<Vino>> index(@RequestParam(defaultValue = "default") String order,
+            @RequestParam(defaultValue = "") String ricerca) {
+        List<Vino> vini = vinoService.findAllViniOrdinati(order, ricerca);
 
         return new ResponseEntity<List<Vino>>(vini, HttpStatus.OK);
     }
 
     @GetMapping("/regione/{slugRegione}")
     public ResponseEntity<List<Vino>> indexRegione(@PathVariable("slugRegione") String slugRegione,
-            @RequestParam(defaultValue = "default") String order) {
+            @RequestParam(defaultValue = "default") String order, @RequestParam(defaultValue = "") String ricerca) {
 
         Optional<Regione> optionalRegione = regioneService.findRegioneBySlug(slugRegione);
         if (optionalRegione.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        List<Vino> vini = vinoService.getViniPerRegione(slugRegione, order);
+        List<Vino> vini = vinoService.getViniPerRegione(slugRegione, order, ricerca);
 
         return new ResponseEntity<List<Vino>>(vini, HttpStatus.OK);
     }
 
     @GetMapping("/categoria/{slugTipologia}")
     public ResponseEntity<List<Vino>> indexTipologia(@PathVariable("slugTipologia") String slugTipologia,
-            @RequestParam(defaultValue = "default") String order) {
+            @RequestParam(defaultValue = "default") String order, @RequestParam(defaultValue = "") String ricerca) {
 
         Optional<Tipologia> optionalTipologia = tipologiaService.findTipologiaBySlug(slugTipologia);
         if (optionalTipologia.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        List<Vino> vini = vinoService.getViniPerTipologia(slugTipologia, order);
+        List<Vino> vini = vinoService.getViniPerTipologia(slugTipologia, order, ricerca);
 
         return new ResponseEntity<List<Vino>>(vini, HttpStatus.OK);
     }
@@ -78,7 +79,8 @@ public class VinoRestController {
     public ResponseEntity<List<Vino>> indexRegioneETipolgia(
             @PathVariable("slugRegione") String slugRegione,
             @PathVariable("slugTipologia") String slugTipologia,
-            @RequestParam(defaultValue = "default") String order) {
+            @RequestParam(defaultValue = "default") String order,
+            @RequestParam(defaultValue = "") String ricerca) {
 
         Optional<Regione> optionalRegione = regioneService.findRegioneBySlug(slugRegione);
         Optional<Tipologia> optionalTipologia = tipologiaService.findTipologiaBySlug(slugTipologia);
@@ -86,7 +88,7 @@ public class VinoRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        List<Vino> vini = vinoService.getViniPerRegioneETipologia(slugRegione, slugTipologia, order);
+        List<Vino> vini = vinoService.getViniPerRegioneETipologia(slugRegione, slugTipologia, order, ricerca);
 
         return new ResponseEntity<List<Vino>>(vini, HttpStatus.OK);
     }

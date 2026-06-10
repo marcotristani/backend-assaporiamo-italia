@@ -42,8 +42,9 @@ public class VinoController {
     ProdottoTipicoService prodottoTipicoService;
 
     @GetMapping("/all")
-    public String index(@RequestParam(defaultValue = "default") String order, Model model) {
-        List<Vino> vini = vinoService.findAllViniOrdinati(order);
+    public String index(@RequestParam(defaultValue = "default") String order,
+            @RequestParam(defaultValue = "") String ricerca, Model model) {
+        List<Vino> vini = vinoService.findAllViniOrdinati(order, ricerca);
         List<Tipologia> listaTipologie = tipologiaService.getTipologieOrdinate();
         model.addAttribute("vini", vini);
         model.addAttribute("listaTipologie", listaTipologie);
@@ -54,12 +55,13 @@ public class VinoController {
 
     @GetMapping("/tipologia/{slugTipologia}")
     public String indexTipologia(@PathVariable("slugTipologia") String slugTipologia,
-            @RequestParam(defaultValue = "default") String order, Model model) {
+            @RequestParam(defaultValue = "default") String order, @RequestParam(defaultValue = "") String ricerca,
+            Model model) {
         Optional<Tipologia> optionalTipologia = tipologiaService.findTipologiaBySlug(slugTipologia);
         if (optionalTipologia.isEmpty()) {
             return "error/404";
         }
-        List<Vino> vini = vinoService.getViniPerTipologia(slugTipologia, order);
+        List<Vino> vini = vinoService.getViniPerTipologia(slugTipologia, order, ricerca);
         List<Tipologia> listaTipologie = tipologiaService.getTipologieOrdinate();
         Tipologia tipologiaSelezionata = tipologiaService.getTipologiaBySlug(slugTipologia);
         model.addAttribute("vini", vini);
@@ -72,12 +74,13 @@ public class VinoController {
 
     @GetMapping("/regione/{slugRegione}")
     public String indexRegione(@PathVariable("slugRegione") String slugRegione,
-            @RequestParam(defaultValue = "default") String order, Model model) {
+            @RequestParam(defaultValue = "default") String order, @RequestParam(defaultValue = "") String ricerca,
+            Model model) {
         Optional<Regione> optionalRegione = regioneService.findRegioneBySlug(slugRegione);
         if (optionalRegione.isEmpty()) {
             return "error/404";
         }
-        List<Vino> vini = vinoService.getViniPerRegione(slugRegione, order);
+        List<Vino> vini = vinoService.getViniPerRegione(slugRegione, order, ricerca);
         List<Tipologia> listaTipologie = tipologiaService.getTipologieOrdinate();
         Regione regioneSelezionata = regioneService.getRegioneBySlug(slugRegione);
         model.addAttribute("vini", vini);
@@ -91,6 +94,7 @@ public class VinoController {
     @GetMapping("/tipologia/{slugTipologia}/regione/{slugRegione}")
     public String indexRegioneETipologia(@PathVariable("slugTipologia") String slugTipologia,
             @PathVariable("slugRegione") String slugRegione, @RequestParam(defaultValue = "default") String order,
+            @RequestParam(defaultValue = "") String ricerca,
             Model model) {
         Optional<Regione> optionalRegione = regioneService.findRegioneBySlug(slugRegione);
         if (optionalRegione.isEmpty()) {
@@ -101,7 +105,7 @@ public class VinoController {
             return "error/404";
         }
         List<Vino> vini = vinoService.getViniPerRegioneETipologia(slugRegione,
-                slugTipologia, order);
+                slugTipologia, order, ricerca);
         List<Tipologia> listaTipologie = tipologiaService.getTipologieOrdinate();
         Tipologia tipologiaSelezionata = tipologiaService.getTipologiaBySlug(slugTipologia);
         Regione regioneSelezionata = regioneService.getRegioneBySlug(slugRegione);
@@ -177,14 +181,15 @@ public class VinoController {
     }
 
     @GetMapping("/dettaglio/{slug}/gestisci-prodotti")
-    public String mostraGestioneVini(@PathVariable("slug") String slug, Model model) {
+    public String mostraGestioneVini(@PathVariable("slug") String slug, @RequestParam(defaultValue = "") String ricerca,
+            Model model) {
         Optional<Vino> optionalVino = vinoService.findBySlug(slug);
         if (optionalVino.isEmpty()) {
             return "error/404";
         }
         Vino vino = vinoService.getBySlug(slug);
 
-        List<ProdottoTipico> listaProdottiTipici = prodottoTipicoService.findAllProdottiOrdinati("alfabetico");
+        List<ProdottoTipico> listaProdottiTipici = prodottoTipicoService.findAllProdottiOrdinati("alfabetico", ricerca);
 
         model.addAttribute("vino", vino);
         model.addAttribute("listaProdottiTipici", listaProdottiTipici);

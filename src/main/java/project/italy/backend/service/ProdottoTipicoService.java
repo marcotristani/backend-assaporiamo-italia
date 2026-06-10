@@ -32,45 +32,78 @@ public class ProdottoTipicoService {
         return prodottoTipicoRepository.findBySlug(slugProdotto).get();
     }
 
-    public List<ProdottoTipico> findAllProdottiOrdinati(String order) {
-        if (order.equalsIgnoreCase("alfabetico")) {
+    public List<ProdottoTipico> findAllProdottiOrdinati(String order, String ricerca) {
+        if (order.equalsIgnoreCase("alfabetico") && ricerca.isBlank()) {
             return prodottoTipicoRepository.findAllByOrderByNomeAsc();
+        }
+        if (order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return prodottoTipicoRepository.findByNomeContainingIgnoreCaseOrderByNomeAsc(ricerca);
+        }
+        if (!order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return prodottoTipicoRepository.findByNomeContainingIgnoreCase(ricerca);
         }
         return prodottoTipicoRepository.findAll();
     }
 
-    public List<ProdottoTipico> getProdottiPerRegione(String slugRegione, String order) {
+    public List<ProdottoTipico> getProdottiPerRegione(String slugRegione, String order, String ricerca) {
 
         Regione regione = regioneService.getRegioneBySlug(slugRegione);
 
-        if (order.equalsIgnoreCase("alfabetico")) {
+        if (order.equalsIgnoreCase("alfabetico") && ricerca.isBlank()) {
             return prodottoTipicoRepository.findByRegioneOrderByNomeAsc(regione);
+        }
+
+        if (order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return prodottoTipicoRepository.findByRegioneAndNomeContainingIgnoreCaseOrderByNomeAsc(regione, ricerca);
+        }
+
+        if (!order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return prodottoTipicoRepository.findByRegioneAndNomeContainingIgnoreCase(regione, ricerca);
         }
 
         return prodottoTipicoRepository.findByRegione(regione);
     }
 
-    public List<ProdottoTipico> getProdottiPerCategoria(String slugCategoria, String order) {
+    public List<ProdottoTipico> getProdottiPerCategoria(String slugCategoria, String order, String ricerca) {
 
         Categoria categoria = categoriaService.getCategoriaBySlug(slugCategoria);
 
-        if (order.equalsIgnoreCase("alfabetico")) {
+        if (order.equalsIgnoreCase("alfabetico") && ricerca.isBlank()) {
             return prodottoTipicoRepository.findByCategoriaOrderByNomeAsc(categoria);
+        }
+
+        if (order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return prodottoTipicoRepository.findByCategoriaAndNomeContainingIgnoreCaseOrderByNomeAsc(categoria,
+                    ricerca);
+        }
+
+        if (!order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return prodottoTipicoRepository.findByCategoriaAndNomeContainingIgnoreCase(categoria, ricerca);
         }
 
         return prodottoTipicoRepository.findByCategoria(categoria);
     }
 
     public List<ProdottoTipico> getProdottiPerRegioneECategoria(String slugRegione, String slugCategoria,
-            String order) {
+            String order, String ricerca) {
 
         Regione regione = regioneService.getRegioneBySlug(slugRegione);
 
         Categoria categoria = categoriaService.getCategoriaBySlug(slugCategoria);
 
-        if (order.equalsIgnoreCase("alfabetico")) {
-            return prodottoTipicoRepository.findByRegioneAndCategoriaOrderByNomeAsc(regione,
-                    categoria);
+        if (order.equalsIgnoreCase("alfabetico") && ricerca.isBlank()) {
+            return prodottoTipicoRepository.findByRegioneAndCategoriaOrderByNomeAsc(regione, categoria);
+        }
+
+        if (order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return prodottoTipicoRepository.findByRegioneAndCategoriaAndNomeContainingIgnoreCaseOrderByNomeAsc(regione,
+                    categoria,
+                    ricerca);
+        }
+
+        if (!order.equalsIgnoreCase("alfabetico") && !ricerca.isBlank()) {
+            return prodottoTipicoRepository.findByRegioneAndCategoriaAndNomeContainingIgnoreCase(regione, categoria,
+                    ricerca);
         }
 
         return prodottoTipicoRepository.findByRegioneAndCategoria(regione,

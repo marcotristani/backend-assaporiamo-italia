@@ -39,4 +39,26 @@ public interface VinoRepository extends JpaRepository<Vino, Integer> {
 
     List<Vino> findByProdottiTipiciSlugOrderByNomeAsc(String slugProdottoTipico);
 
+    List<Vino> findByNomeContainingIgnoreCase(String nome);
+
+    List<Vino> findByNomeContainingIgnoreCaseOrderByNomeAsc(String nome);
+
+    List<Vino> findByRegioneAndNomeContainingIgnoreCase(Regione regione, String nome);
+
+    List<Vino> findByRegioneAndNomeContainingIgnoreCaseOrderByNomeAsc(Regione regione, String nome);
+
+    List<Vino> findByTipologiaAndNomeContainingIgnoreCase(Tipologia tipologia, String nome);
+
+    List<Vino> findByTipologiaAndNomeContainingIgnoreCaseOrderByNomeAsc(Tipologia tipologia, String nome);
+
+    List<Vino> findByRegioneAndTipologiaAndNomeContainingIgnoreCase(
+            Regione regione,
+            Tipologia tipologia,
+            String nome);
+
+    List<Vino> findByRegioneAndTipologiaAndNomeContainingIgnoreCaseOrderByNomeAsc(
+            Regione regione,
+            Tipologia tipologia,
+            String nome);
+
 }
