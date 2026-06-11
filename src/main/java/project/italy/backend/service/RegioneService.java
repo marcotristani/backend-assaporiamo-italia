@@ -29,4 +29,12 @@ public class RegioneService {
         Optional<Regione> optionalRegione = regioneRepository.findBySlug(slugRegione);
         return optionalRegione.get();
     }
+
+    public Regione update(Regione regioneDaModificare, Regione formregioneModificata) {
+        regioneDaModificare.setDescrizione(formregioneModificata.getDescrizione());
+        regioneDaModificare.setUrlImmagine(formregioneModificata.getUrlImmagine());
+
+        return regioneRepository.save(regioneDaModificare);
+
+    }
 }

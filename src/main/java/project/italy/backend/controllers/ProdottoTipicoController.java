@@ -275,7 +275,6 @@ public class ProdottoTipicoController {
         List<Categoria> listaCategorie = categoriaService.getCategorieOrdinate();
 
         if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(error -> System.out.println("TEST ERRORE FORM: " + error.toString()));
             model.addAttribute("listaCategorie", listaCategorie);
             model.addAttribute("listaRegioni", listaRegioni);
 
