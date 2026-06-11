@@ -498,4 +498,14 @@ INSERT INTO prodotto_vino (prodotto_id, vino_id) VALUES (138, 141);
 INSERT INTO prodotto_vino (prodotto_id, vino_id) VALUES (139, 137);
 INSERT INTO prodotto_vino (prodotto_id, vino_id) VALUES (140, 144);
 INSERT INTO prodotto_vino (prodotto_id, vino_id) VALUES (141, 138);
- 
+--Inserimento ruoli e user
+INSERT INTO roles (name) VALUES ('USER'); 
+INSERT INTO roles (name) VALUES ('ADMIN'); 
+INSERT INTO users (username, password) VALUES ('admin', '{noop}root');
+INSERT INTO users (username, password) VALUES ('user', '{noop}password');
+INSERT INTO users (username, password) VALUES ('marco', '{noop}1234');
+INSERT INTO users (username, password) VALUES ('gestore', '{noop}qwerty');
+INSERT INTO role_user (user_id, role_id) VALUES (1, 2);
+INSERT INTO role_user (user_id, role_id) VALUES (2, 1);
+INSERT INTO role_user (user_id, role_id) VALUES (3, 1);
+INSERT INTO role_user (user_id, role_id) VALUES (4, 2);

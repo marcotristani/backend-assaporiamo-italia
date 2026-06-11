@@ -18,6 +18,7 @@
         >
           Tutte le Regioni
         </a>
+
         <th:block th:unless="${regioneSelezionata == null}">
           <a
             th:href="@{/backoffice/prodotti/all}"
@@ -49,6 +50,9 @@
             [[${categoriaSelezionata.nome}]]
           </p>
         </th:block>
+        <th:block
+          th:replace="~{fragments/barraDiRicerca :: barraDiRicercaProdotti( ${categoriaSelezionata}, ${regioneSelezionata})}"
+        />
       </header>
 
       <div class="d-flex justify-content-between mb-3">
@@ -58,6 +62,7 @@
         >
           Aggiungi un Prodotto Tipico
         </a>
+
         <th:block
           th:replace="~{fragments/bottoneOrdinamento :: bottoneOrdinamentoProdotti( ${categoriaSelezionata}, ${regioneSelezionata})}"
         />
