@@ -19,13 +19,6 @@ public class RegioneController {
     @Autowired
     RegioneService regioneService;
 
-    @GetMapping
-    public String index(Model model) {
-        List<Regione> regioni = regioneService.getRegioniOrdinate();
-        model.addAttribute("regioni", regioni);
-        return "regione/index";
-    }
-
     @GetMapping("/{slugRegione}")
     public String show(@PathVariable("slugRegione") String slugRegione, Model model) {
         Regione regione = regioneService.getRegioneBySlug(slugRegione);

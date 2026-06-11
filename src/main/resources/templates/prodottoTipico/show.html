@@ -8,6 +8,8 @@
     />
   </head>
   <body class="bg-light" th:object="${prodottoTipico}">
+    <th:block th:replace="~{fragments/navbar :: navbarBase(false)}" />
+
     <div class="container py-5">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <a

@@ -8,8 +8,9 @@
     />
   </head>
   <body class="bg-light">
+    <th:block th:replace="~{fragments/navbar :: navbarBase(false)}" />
+
     <div class="container py-5">
-      <!-- Navigazione Superiore e Annullamento -->
       <div class="d-flex justify-content-between align-items-center mb-4">
         <a
           th:href="@{/backoffice/prodotti/all}"
