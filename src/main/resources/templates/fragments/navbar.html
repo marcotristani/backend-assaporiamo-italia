@@ -130,11 +130,25 @@
       </div>
     </div>
     <div>
-      <a
-        th:href="@{/logout}"
-        class="btn btn-outline-danger fw-bold text-white px-4 py-2"
+      <form
+        sec:authorize="isAuthenticated()"
+        th:action="@{/logout}"
+        method="post"
+        class="d-inline"
       >
-        Logout
+        <button
+          type="submit"
+          class="btn btn-outline-danger fw-bold text-white px-4 py-2"
+        >
+          Logout
+        </button>
+      </form>
+      <a
+        sec:authorize="isAnonymous()"
+        th:href="@{/login}"
+        class="btn btn-primary shadow-sm fw-bold"
+      >
+        Accedi
       </a>
     </div>
   </nav>
