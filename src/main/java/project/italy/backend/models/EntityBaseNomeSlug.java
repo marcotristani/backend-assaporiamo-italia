@@ -27,14 +27,14 @@ public abstract class EntityBaseNomeSlug {
             return;
         }
 
-        // 1. Rimuove gli accenti (es. à -> a)
+        // 1. Rimuove gli accenti
         String nfdNormalizedString = Normalizer.normalize(this.nome, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         String senzaAccenti = pattern.matcher(nfdNormalizedString).replaceAll("");
 
         // 2. Converte in minuscolo e rimuove caratteri speciali
         this.slug = senzaAccenti
-                .toLowerCase(Locale.ENGLISH)
+                .toLowerCase(Locale.ITALIAN)
                 .replaceAll("[^a-z0-9\\s-]", "") // Rimuove tutto ciò che non è alfanumerico o spazio
                 .replaceAll("\\s+", "-") // Sostituisce gli spazi con un singolo trattino
                 .replaceAll("-+", "-") // Evita trattini doppi consecutivi

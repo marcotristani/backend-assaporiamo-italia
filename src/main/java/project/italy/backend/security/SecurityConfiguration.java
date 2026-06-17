@@ -24,12 +24,21 @@ public class SecurityConfiguration {
                         "/backoffice/vini/*/edit",
                         "/backoffice/vini/dettaglio/*/gestisci-prodotti")
                 .hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/login", "/logout").permitAll()
                 .requestMatchers(HttpMethod.POST, "/**").hasAuthority("ADMIN")
                 .requestMatchers("/backoffice/prodotti/**",
-                        "/backoffice/vini/**")
-                .hasAnyAuthority("ADMIN", "USER")
-                .requestMatchers("/**").permitAll())
-                .formLogin(Customizer.withDefaults())
+                        "/backoffice/vini/**", "/**")
+                .permitAll())
+                // .formLogin(Customizer.withDefaults())
+                .formLogin(form -> form
+                        .loginPage("/login") // L'URL dove risiede il tuo form Bootstrap
+                        .loginProcessingUrl("/login") // L'endpoint POST nativo gestito da Spring
+                        .defaultSuccessUrl("/", true) // Dove reindirizzare dopo il successo
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll())
                 .cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable());
         return http.build();

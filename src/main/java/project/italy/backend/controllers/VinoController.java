@@ -278,7 +278,6 @@ public class VinoController {
         List<Tipologia> listaTipologie = tipologiaService.getTipologieOrdinate();
 
         if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(error -> System.out.println("TEST ERRORE FORM: " + error.toString()));
             model.addAttribute("listaTipologie", listaTipologie);
             model.addAttribute("listaRegioni", listaRegioni);
 

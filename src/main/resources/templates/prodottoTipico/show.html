@@ -19,7 +19,7 @@
           Tutti i Prodotti Tipici
         </a>
 
-        <div class="d-flex gap-2">
+        <div sec:authorize="hasAuthority('ADMIN')" class="d-flex gap-2">
           <a
             th:href="@{/backoffice/prodotti/{slug}/edit(slug=*{slug})}"
             class="btn btn-warning btn-sm px-4 fw-bold shadow-sm"
@@ -135,6 +135,7 @@
               Vedi tutti i Vini
             </a>
             <a
+              sec:authorize="hasAuthority('ADMIN')"
               th:href="@{/backoffice/prodotti/dettaglio/{slug}/gestisci-vini(slug=*{slug})}"
               class="btn btn-sm btn-outline-primary fw-semibold shadow-sm"
             >
