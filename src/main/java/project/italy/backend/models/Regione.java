@@ -33,6 +33,9 @@ public class Regione extends EntityBaseNomeSlug {
     @NotBlank(message = "L'url non può essere vuoto")
     private String urlImmagine;
 
+    @NotBlank
+    private String svg_coordinate;
+
     @OneToMany(mappedBy = "regione")
     @JsonIgnore
     private List<ProdottoTipico> prodottiTipici;
