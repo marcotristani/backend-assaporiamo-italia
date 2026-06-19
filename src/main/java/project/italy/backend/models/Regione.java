@@ -34,7 +34,16 @@ public class Regione extends EntityBaseNomeSlug {
     private String urlImmagine;
 
     @NotBlank
+    @Lob
     private String svg_coordinate;
+
+    public String getSvg_coordinate() {
+        return svg_coordinate;
+    }
+
+    public void setSvg_coordinate(String svg_coordinate) {
+        this.svg_coordinate = svg_coordinate;
+    }
 
     @OneToMany(mappedBy = "regione")
     @JsonIgnore
