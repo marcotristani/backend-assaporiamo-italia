@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.URL;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -54,6 +55,18 @@ public class ProdottoTipico extends EntityBaseNomeSlug {
     @JsonIgnore
     @JoinTable(name = "prodotto_vino", joinColumns = @JoinColumn(name = "prodotto_id"), inverseJoinColumns = @JoinColumn(name = "vino_id"))
     private List<Vino> vini;
+
+    // Espone nel JSON la proprietà "regione" come stringa con solo il nome
+    @JsonGetter("regione")
+    public String getRegioneNome() {
+        return regione.getNome();
+    }
+
+    // Espone nel JSON la proprietà "categoria" como stringa con solo il nome
+    @JsonGetter("categoria")
+    public String getCategoriaNome() {
+        return categoria.getNome();
+    }
 
     public Integer getId() {
         return id;
